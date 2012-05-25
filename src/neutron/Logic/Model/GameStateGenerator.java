@@ -16,7 +16,8 @@ public class GameStateGenerator implements IGameStateGenerator {
     public List<IGameState> getNexts(IGameState gameState) {
 
         IGameBorder gameBorder = gameState.getGameBorder();
-        Player player = gameState.getActualPlayer();
+        IPlayer player = gameState.getActualPlayer();
+        IPlayer nextPlayer = gameState.getNextPlayer();
         
         List<IGameBorder> neutronMoves = generatePossibleNeutronMoves(gameBorder);
             
@@ -24,7 +25,7 @@ public class GameStateGenerator implements IGameStateGenerator {
             return null; // dla tego gameBorder nie da sie zrobic ruchu, neutron zablokowany
         }
         
-        List<IGameState> allMoves = generatePossibleMoves(neutronMoves, player);
+        List<IGameState> allMoves = generatePossibleMoves(neutronMoves, player, nextPlayer);
 
         if(allMoves.isEmpty()) {
             return null; // dla tego gameBorder nie da sie zrobic ruchu, neutron zablokowany
@@ -33,14 +34,10 @@ public class GameStateGenerator implements IGameStateGenerator {
         return allMoves;
     }
    
-    private List<IGameState> generatePossibleMoves(List<IGameBorder> neutronMoves, Player player) {
+    private List<IGameState> generatePossibleMoves(
+            List<IGameBorder> neutronMoves, IPlayer player, IPlayer nextPlayer) {
         
-        BorderElementType t = player == Player.Player1 ? 
-                BorderElementType.White : 
-                BorderElementType.Black;
-        Player nextPlayer = player == Player.Player1 ?
-                Player.Player2 :
-                Player.Player1;
+        BorderElementType t = player.getPawnsColor();
         
         List<IGameState> list = new LinkedList<IGameState>();
         int borderSize = neutronMoves.get(0).getBorderSize();
@@ -51,7 +48,8 @@ public class GameStateGenerator implements IGameStateGenerator {
                     if(nm.getElement(i, j) == t) {
                         List<IGameBorder> states =  MovesRunner.ExecuteMoves(nm, t, new Position(i, j));
                         for(IGameBorder s : states) {
-                            list.add(new GameState(s, nextPlayer));
+                            list.add(new GameState(s, nextPlayer, player)); 
+                                //@todo to powinien robic game master!
                         }
                     }
                 }

@@ -2,7 +2,7 @@ package neutron.Logic.Model;
 
 import neutron.Logic.Interfaces.IGameBorder;
 import neutron.Logic.Interfaces.IGameState;
-import neutron.Logic.Interfaces.Player;
+import neutron.Logic.Interfaces.IPlayer;
 
 /**
  * @author Marcin
@@ -10,11 +10,13 @@ import neutron.Logic.Interfaces.Player;
 public class GameState implements IGameState {
 
     private IGameBorder gameBorder;
-    private Player actualPlayer;
+    private IPlayer actualPlayer;
+    private IPlayer nextPlayer;
     
-    public GameState(IGameBorder gameBorder, Player actualPlayer) {
+    public GameState(IGameBorder gameBorder, IPlayer actualPlayer, IPlayer nextPlayer) {
         this.gameBorder = gameBorder;
         this.actualPlayer = actualPlayer;
+        this.nextPlayer = nextPlayer;
     }
     
     @Override
@@ -23,7 +25,12 @@ public class GameState implements IGameState {
     }
 
     @Override
-    public Player getActualPlayer() {
+    public IPlayer getActualPlayer() {
         return actualPlayer;
     }    
+    
+    @Override
+    public IPlayer getNextPlayer() {
+        return nextPlayer;
+    }
 }

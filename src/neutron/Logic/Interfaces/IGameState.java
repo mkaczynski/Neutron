@@ -7,5 +7,7 @@ package neutron.Logic.Interfaces;
 public interface IGameState {
     IGameBorder getGameBorder();
 
-    Player getActualPlayer();
+    IPlayer getActualPlayer();
+
+    IPlayer getNextPlayer();
 }

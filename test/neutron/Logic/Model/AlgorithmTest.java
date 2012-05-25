@@ -9,7 +9,6 @@ import neutron.Logic.Model.Moves.SMove;
 import neutron.Utils.Position;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,8 +37,11 @@ public class AlgorithmTest {
         
         IMove m = new SMove();
         m.Move(gameBorder, BorderElementType.White, new Position(0, 0));
+
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black);
         
-        IGameState gameState = new GameState(gameBorder, Player.Player1);
+        IGameState gameState = new GameState(gameBorder, p1, p2);
         
         int depth = 1;
 
