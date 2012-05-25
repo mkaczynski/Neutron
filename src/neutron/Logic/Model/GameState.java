@@ -33,4 +33,11 @@ public class GameState implements IGameState {
     public IPlayer getNextPlayer() {
         return nextPlayer;
     }
+
+    @Override
+    public void changePlayers() {
+        IPlayer tmp = actualPlayer;
+        actualPlayer = nextPlayer;
+        nextPlayer = tmp;
+    }
 }

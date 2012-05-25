@@ -8,6 +8,6 @@ public interface IGameState {
     IGameBorder getGameBorder();
 
     IPlayer getActualPlayer();
-
     IPlayer getNextPlayer();
+    void changePlayers();
 }
