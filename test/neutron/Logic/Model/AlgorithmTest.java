@@ -44,8 +44,6 @@ public class AlgorithmTest {
         
         IGameState gameState = new GameState(gameBorder, p1, p2);
         
-        int depth = 3;
-
         IHeuristics heuristics = new SimpleHeuristic();
         IGameStateGenerator gameStateGenerator = new GameStateGenerator();
         ILogger logger = new FakeLogger();
@@ -53,7 +51,7 @@ public class AlgorithmTest {
         IAlgorithm instance = new Algorithm(heuristics, gameStateGenerator, logger);
         
         //IGameState expResult = null;
-        IGameState result = instance.alfabeta(gameState, depth);
+        IGameState result = instance.mekeMove(gameState);
         
         assertNotNull(result);
         //assertEquals(expResult, result);
