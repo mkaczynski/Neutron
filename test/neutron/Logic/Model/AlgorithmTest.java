@@ -48,7 +48,7 @@ public class AlgorithmTest {
 
         IHeuristics heuristics = new SimpleHeuristic();
         IGameStateGenerator gameStateGenerator = new GameStateGenerator();
-        ILogger logger = new Logger();
+        ILogger logger = new FakeLogger();
         
         IAlgorithm instance = new Algorithm(heuristics, gameStateGenerator, logger);
         
