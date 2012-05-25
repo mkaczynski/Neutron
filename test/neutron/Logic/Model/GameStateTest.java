@@ -132,4 +132,22 @@ public class GameStateTest {
         }
         assertEquals(true, wasException);
     }
+    
+    @Test
+    public void set_border() {
+        
+        IGameBorderGenerator gbg = new GameBorderGenerator();
+        IGameBorder gb = gbg.generateNewGame(5);
+        
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
+        
+        IGameState gs = new GameState(gb, p1, p2);
+        
+        IGameBorder expectedResult = gbg.generateNewGame(7);
+        gs.setBorder(expectedResult);
+        
+        IGameBorder ngb = gs.getGameBorder();
+        assertEquals(expectedResult, ngb);
+    }
 }
