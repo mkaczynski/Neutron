@@ -39,8 +39,8 @@ public class AlgorithmTest {
         IMove m = new SMove();
         gameBorder = m.Move(gameBorder, BorderElementType.White, new Position(0, 0));
 
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.Black);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.White);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.Black, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.White, null);
         
         IGameState gameState = new GameState(gameBorder, p1, p2);
         

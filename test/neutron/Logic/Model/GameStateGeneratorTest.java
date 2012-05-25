@@ -38,8 +38,8 @@ public class GameStateGeneratorTest {
         IGameStateGenerator instance = new GameStateGenerator();
         IGameBorder game = gbg.generateNewGame(5);
 
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
         
         IGameState gs = new GameState(game, p1, p2);
         
@@ -69,8 +69,8 @@ public class GameStateGeneratorTest {
         
         game.write();
         
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.Black);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.White);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.Black, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.White, null);
         
         IGameState gs = new GameState(game, p1, p2);
         List result = instance.getNexts(gs);

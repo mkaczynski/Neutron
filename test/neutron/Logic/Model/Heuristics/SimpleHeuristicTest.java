@@ -42,8 +42,8 @@ public class SimpleHeuristicTest {
         gameBorder = m.Move(gameBorder, BorderElementType.Neutron, new Position(2,2));
         gameBorder = m.Move(gameBorder, BorderElementType.White, new Position(0,0));
         
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
         
         IGameState gameState = new GameState(gameBorder, p1, p2);
         
@@ -77,8 +77,8 @@ public class SimpleHeuristicTest {
         
         game.write();
         
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
         
         IGameState gs = new GameState(game, p1, p2);
         

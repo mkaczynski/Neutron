@@ -8,5 +8,6 @@ public interface IPlayer {
     PlayerNumber getPlayerNumber();
     
     BorderElementType getPawnsColor();
-    
+
+    IAlgorithm getAlgorithm();
 }

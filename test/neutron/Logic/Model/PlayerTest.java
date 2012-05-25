@@ -6,6 +6,7 @@ package neutron.Logic.Model;
 
 import java.security.InvalidParameterException;
 import neutron.Logic.Interfaces.BorderElementType;
+import neutron.Logic.Interfaces.IAlgorithm;
 import neutron.Logic.Interfaces.IPlayer;
 import neutron.Logic.Interfaces.PlayerNumber;
 import org.junit.AfterClass;
@@ -32,7 +33,7 @@ public class PlayerTest {
     @Test
     public void get_player_number() {
 
-        IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Black);
+        IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
         PlayerNumber expResult = PlayerNumber.Player2;
         
         PlayerNumber result = instance.getPlayerNumber();
@@ -42,11 +43,21 @@ public class PlayerTest {
     @Test
     public void get_pawns_color() {
         
-        IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Black);
+        IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
         BorderElementType expResult = BorderElementType.Black;
         
         BorderElementType result = instance.getPawnsColor();
         assertEquals(expResult, result);
+    }
+
+    @Test
+    public void get_algorithm() {
+        
+        IAlgorithm algorithm = new Algorithm(null, null, null);
+        IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Black, algorithm);
+        
+        IAlgorithm result = instance.getAlgorithm();
+        assertEquals(algorithm, result);
     }
     
     @Test
@@ -55,7 +66,7 @@ public class PlayerTest {
         boolean wasException = false;
         try
         {
-            IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Neutron);
+            IPlayer instance = new Player(PlayerNumber.Player2, BorderElementType.Neutron, null);
         }
         catch(InvalidParameterException ex)
         {
