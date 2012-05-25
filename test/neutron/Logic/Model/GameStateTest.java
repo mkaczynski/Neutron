@@ -4,6 +4,7 @@
  */
 package neutron.Logic.Model;
 
+import java.security.InvalidParameterException;
 import neutron.Logic.Interfaces.*;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -33,7 +34,10 @@ public class GameStateTest {
         IGameBorderGenerator gbg = new GameBorderGenerator();
         IGameBorder expResult = gbg.generateNewGame(5);
         
-        IGameState instance = new GameState(expResult, null, null);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
+        
+        IGameState instance = new GameState(expResult, p1, p2);
         IGameBorder result = instance.getGameBorder();
         assertEquals(expResult, result);
     }
@@ -41,7 +45,9 @@ public class GameStateTest {
     @Test
     public void get_actual_player() {
         IPlayer expResult = new Player(PlayerNumber.Player1, BorderElementType.White, null);
-        IGameState instance = new GameState(null, expResult, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
+        
+        IGameState instance = new GameState(null, expResult, p2);
         
         IPlayer result = instance.getActualPlayer();
         assertEquals(expResult, result);
@@ -49,8 +55,10 @@ public class GameStateTest {
 
     @Test
     public void get_next_player() {
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
         IPlayer expResult = new Player(PlayerNumber.Player1, BorderElementType.White, null);
-        IGameState instance = new GameState(null, null, expResult);
+        
+        IGameState instance = new GameState(null, p2, expResult);
         
         IPlayer result = instance.getNextPlayer();
         assertEquals(expResult, result);
@@ -77,5 +85,51 @@ public class GameStateTest {
 
         result = instance.getNextPlayer();
         assertEquals(p1, result);
+    }
+    
+    @Test
+    public void try_create_invalid_game_state() {
+    
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        boolean wasException = false;
+        
+        try {
+            IGameState instance = new GameState(null, p1, p1);
+        }
+        catch(InvalidParameterException ex) {
+            wasException = true;
+        }
+        
+        assertEquals(true, wasException);
+    }
+
+    @Test
+    public void try_create_invalid_game_state_wrong_player_color() {
+        boolean wasException = false;
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.White, null);
+        
+        try {
+            IGameState instance = new GameState(null, p1, p2);
+        }
+        catch(InvalidParameterException ex) {
+            wasException = true;
+        }
+        assertEquals(true, wasException);
+    }
+    
+    @Test
+    public void try_create_invalid_game_state_wrong_player_number() {
+        boolean wasException = false;
+        IPlayer p1 = new Player(PlayerNumber.Player2, BorderElementType.White, null);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, null);
+        
+        try {
+            IGameState instance = new GameState(null, p1, p2);
+        }
+        catch(InvalidParameterException ex) {
+            wasException = true;
+        }
+        assertEquals(true, wasException);
     }
 }

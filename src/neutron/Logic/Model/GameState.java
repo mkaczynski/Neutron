@@ -1,5 +1,6 @@
 package neutron.Logic.Model;
 
+import java.security.InvalidParameterException;
 import neutron.Logic.Interfaces.IGameBorder;
 import neutron.Logic.Interfaces.IGameState;
 import neutron.Logic.Interfaces.IPlayer;
@@ -14,6 +15,12 @@ public class GameState implements IGameState {
     private IPlayer nextPlayer;
     
     public GameState(IGameBorder gameBorder, IPlayer actualPlayer, IPlayer nextPlayer) {
+        
+        if(actualPlayer.getPlayerNumber() == nextPlayer.getPlayerNumber() ||
+                actualPlayer.getPawnsColor() == nextPlayer.getPawnsColor()) {
+            throw new InvalidParameterException();
+        }
+        
         this.gameBorder = gameBorder;
         this.actualPlayer = actualPlayer;
         this.nextPlayer = nextPlayer;
