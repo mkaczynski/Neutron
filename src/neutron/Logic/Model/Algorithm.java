@@ -50,8 +50,6 @@ public class Algorithm implements IAlgorithm {
                 bestState = gs;
                 max = val;
                 
-                bestState.getGameBorder().write();
-                System.out.println();
             }
         }
 

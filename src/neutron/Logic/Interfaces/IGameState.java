@@ -6,7 +6,8 @@ package neutron.Logic.Interfaces;
  */
 public interface IGameState {
     IGameBorder getGameBorder();
-
+    void setBorder(IGameBorder gameBorder);
+    
     IPlayer getActualPlayer();
     IPlayer getNextPlayer();
     void changePlayers();

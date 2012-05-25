@@ -47,4 +47,10 @@ public class GameState implements IGameState {
         actualPlayer = nextPlayer;
         nextPlayer = tmp;
     }
+
+    @Override
+    public void setBorder(IGameBorder gameBorder) {
+        this.gameBorder = gameBorder;
+    }
+
 }
