@@ -5,10 +5,11 @@
 package neutron.Logic.Model;
 
 import neutron.Logic.Interfaces.*;
+import neutron.Logic.Model.Heuristics.SimpleHeuristic;
 import neutron.Logic.Model.Moves.SMove;
 import neutron.Utils.Position;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,24 +37,25 @@ public class AlgorithmTest {
         IGameBorder gameBorder = gbg.generateNewGame(5);
         
         IMove m = new SMove();
-        m.Move(gameBorder, BorderElementType.White, new Position(0, 0));
+        gameBorder = m.Move(gameBorder, BorderElementType.White, new Position(0, 0));
 
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black);
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.Black);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.White);
         
         IGameState gameState = new GameState(gameBorder, p1, p2);
         
-        int depth = 1;
+        int depth = 3;
 
-        IHeuristics heuristics = null;
-        IGameStateGenerator gameStateGenerator = null;
+        IHeuristics heuristics = new SimpleHeuristic();
+        IGameStateGenerator gameStateGenerator = new GameStateGenerator();
         ILogger logger = new Logger();
         
         IAlgorithm instance = new Algorithm(heuristics, gameStateGenerator, logger);
         
-        IGameState expResult = null;
+        //IGameState expResult = null;
         IGameState result = instance.alfabeta(gameState, depth);
         
-        assertEquals(expResult, result);
+        assertNotNull(result);
+        //assertEquals(expResult, result);
     }
 }

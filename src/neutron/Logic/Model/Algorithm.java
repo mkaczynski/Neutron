@@ -40,15 +40,19 @@ public class Algorithm implements IAlgorithm {
         
         for(IGameState gs : moves) {
             double val = Math.max(max, alfabeta(gs, depth - 1, Double.MIN_VALUE, Double.MAX_VALUE));
-            if(val >= max) {
+            if(val >= max) {                
+                
                 bestState = gs;
                 max = val;
+                
+                bestState.getGameBorder().write();
+                System.out.println();
             }
         }
 
         logger.writeMessage("Najlepszy znaleziony ruch dla gracza to:");
         logger.writeMessage(bestState.toString()); // null argument exception nie ma prawa sie wydarzyc
-        
+
         return bestState;
     }
     
