@@ -20,7 +20,12 @@ public class Algorithm implements IAlgorithm {
     }
     
     @Override
-    public IGameState alfabeta(IGameState gameState, int depth) throws GameStateException {        
+    public IGameState makeMove(IGameState gameState) throws GameStateException {
+        return alfabeta(gameState, 3); // @todo tymczasowo glebokosc 3, do zrobienia jest
+                                       // iteracyjne poglebianie algorytmu
+    }
+    
+    private IGameState alfabeta(IGameState gameState, int depth) throws GameStateException {        
         
         logger.writeMessage("Obliczenie ruchu dla stanu gry:");
         logger.writeMessage(gameState.toString());

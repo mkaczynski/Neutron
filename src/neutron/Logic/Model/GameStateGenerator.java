@@ -49,7 +49,6 @@ public class GameStateGenerator implements IGameStateGenerator {
                         List<IGameBorder> states =  MovesRunner.ExecuteMoves(nm, t, new Position(i, j));
                         for(IGameBorder s : states) {
                             list.add(new GameState(s, nextPlayer, player)); 
-                                //@todo to powinien robic game master!
                         }
                     }
                 }

@@ -1,5 +1,7 @@
 package neutron.Logic.Interfaces;
 
+import neutron.Logic.Exceptions.GameStateException;
+
 /*
  * Inspects the game course.
  * 
@@ -7,4 +9,7 @@ package neutron.Logic.Interfaces;
  */
 public interface IGameMaster {
     
+    void InitializeGame(IGameState gameState);
+    
+    IGameState makeMove(IGameState gameState) throws GameStateException;
 }
