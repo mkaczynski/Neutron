@@ -65,7 +65,7 @@ public class Algorithm implements IAlgorithm {
             return heuristics.heuristicsValue(gameState);
         }
 
-        if(gameState.getActualPlayer() == Player.Enemy) {
+        if(gameState.getActualPlayer() == Player.Player2) {
             logger.writeMessage("Ruch przeciwnika.");
             for(IGameState gs : moves) {
                 beta = Math.min(beta, alfabeta(gs, depth - 1, alpha, beta));

@@ -39,7 +39,7 @@ public class GameStateGeneratorTest {
         IGameStateGenerator instance = new GameStateGenerator();
         IGameBorder game = gbg.generateNewGame(5);
         
-        IGameState gs = new GameState(game, Player.Player);
+        IGameState gs = new GameState(game, Player.Player1);
         
         List result = instance.getNexts(gs);
 
@@ -67,7 +67,7 @@ public class GameStateGeneratorTest {
         
         game.write();
         
-        IGameState gs = new GameState(game, Player.Enemy);
+        IGameState gs = new GameState(game, Player.Player2);
         List result = instance.getNexts(gs);
          
         assertNull(result);

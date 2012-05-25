@@ -39,7 +39,7 @@ public class AlgorithmTest {
         IMove m = new SMove();
         m.Move(gameBorder, BorderElementType.White, new Position(0, 0));
         
-        IGameState gameState = new GameState(gameBorder, Player.Player);
+        IGameState gameState = new GameState(gameBorder, Player.Player1);
         
         int depth = 1;
 

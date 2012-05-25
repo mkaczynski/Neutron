@@ -35,12 +35,12 @@ public class GameStateGenerator implements IGameStateGenerator {
    
     private List<IGameState> generatePossibleMoves(List<IGameBorder> neutronMoves, Player player) {
         
-        BorderElementType t = player == Player.Player ? 
+        BorderElementType t = player == Player.Player1 ? 
                 BorderElementType.White : 
                 BorderElementType.Black;
-        Player nextPlayer = player == Player.Player ?
-                Player.Enemy :
-                Player.Player;
+        Player nextPlayer = player == Player.Player1 ?
+                Player.Player2 :
+                Player.Player1;
         
         List<IGameState> list = new LinkedList<IGameState>();
         int borderSize = neutronMoves.get(0).getBorderSize();
