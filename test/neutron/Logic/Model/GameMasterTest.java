@@ -49,7 +49,7 @@ public class GameMasterTest {
         
         IGameMaster instance = new GameMaster();
     
-        instance.InitializeGame(gameState);
+        instance.initializeGame(gameState);
         
         assertEquals(p2, gameState.getActualPlayer());
         assertEquals(p1, gameState.getNextPlayer());
@@ -80,7 +80,7 @@ public class GameMasterTest {
         
         IGameMaster instance = new GameMaster();
     
-        instance.InitializeGame(gameState);
+        instance.initializeGame(gameState);
         System.out.println();
         try {
             

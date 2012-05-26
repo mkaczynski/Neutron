@@ -13,7 +13,7 @@ import neutron.Utils.Position;
 public class GameMaster implements IGameMaster {
 
     @Override
-    public void InitializeGame(IGameState gameState) {
+    public void initializeGame(IGameState gameState) {
         
         IGameBorder gb;
         if(gameState.getActualPlayer().getPawnsColor() == BorderElementType.White) {
