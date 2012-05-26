@@ -1,5 +1,6 @@
 package neutron.Logic.Model;
 
+import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Exceptions.GameStateException;
 import neutron.Logic.Interfaces.*;
 import neutron.Logic.Model.Moves.NMove;
@@ -14,7 +15,7 @@ public class GameMaster implements IGameMaster {
     @Override
     public void InitializeGame(IGameState gameState) {
         
-        IGameBorder gb = null;
+        IGameBorder gb;
         if(gameState.getActualPlayer().getPawnsColor() == BorderElementType.White) {
             IMove m = new SMove();
             gb = m.Move(gameState.getGameBorder(), BorderElementType.White, new Position(0,1));
@@ -30,10 +31,20 @@ public class GameMaster implements IGameMaster {
     }
     
     @Override
-    public IGameState makeMove(IGameState gameState) throws GameStateException {
+    public IGameState makeMove(IGameState gameState) throws GameStateException, PlayerWinException {
         
         IPlayer actualPlayer = gameState.getActualPlayer();
-        return actualPlayer.getAlgorithm().makeMove(gameState);
+        IGameState newGameState = actualPlayer.getAlgorithm().makeMove(gameState);
         //@note: kolejnosc graczy w nowym IGameState jest juz dobrze ustalona
+    
+        if(gameIsOver(newGameState)) {
+            throw new PlayerWinException();
+        }
+        
+        return newGameState;
+    }
+    
+    private boolean gameIsOver(IGameState gameState) {
+        return gameState.isNeutronOnBaseField();
     }
 }

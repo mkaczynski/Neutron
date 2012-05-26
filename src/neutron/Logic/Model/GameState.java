@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import neutron.Logic.Interfaces.IGameBorder;
 import neutron.Logic.Interfaces.IGameState;
 import neutron.Logic.Interfaces.IPlayer;
+import neutron.Utils.Position;
 
 /**
  * @author Marcin
@@ -51,6 +52,15 @@ public class GameState implements IGameState {
     @Override
     public void setBorder(IGameBorder gameBorder) {
         this.gameBorder = gameBorder;
+    }
+
+    @Override
+    public boolean isNeutronOnBaseField() {
+    
+        Position neutronPosition = gameBorder.getNeutronPosition();
+        return neutronPosition.getX() == 0 || 
+                neutronPosition.getX() == gameBorder.getBorderSize() - 1;
+        
     }
 
 }

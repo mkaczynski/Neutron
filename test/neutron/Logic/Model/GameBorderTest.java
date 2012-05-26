@@ -7,6 +7,8 @@ package neutron.Logic.Model;
 import neutron.Logic.Interfaces.BorderElementType;
 import neutron.Logic.Interfaces.IGameBorder;
 import neutron.Logic.Interfaces.IGameBorderGenerator;
+import neutron.Logic.Interfaces.IMove;
+import neutron.Logic.Model.Moves.SMove;
 import neutron.Utils.Position;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -52,6 +54,21 @@ public class GameBorderTest {
         assertEquals(2, result.getY());
     }
 
+    @Test
+    public void get_moved_neutron_position() {
+        IGameBorderGenerator generator = new GameBorderGenerator();
+        IGameBorder instance = generator.generateNewGame(5);
+
+        IMove m = new SMove();
+        instance = m.Move(instance, BorderElementType.Neutron, new Position(2,2));
+        
+        Position result = instance.getNeutronPosition();
+
+        assertNotNull(result);
+        assertEquals(3, result.getX());
+        assertEquals(2, result.getY());
+    }
+    
     @Test
     public void get_border_size() {
         

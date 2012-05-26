@@ -1,6 +1,7 @@
 package neutron.Logic.Interfaces;
 
 import neutron.Logic.Exceptions.GameStateException;
+import neutron.Logic.Exceptions.PlayerWinException;
 
 /*
  * Inspects the game course.
@@ -11,5 +12,5 @@ public interface IGameMaster {
     
     void InitializeGame(IGameState gameState);
     
-    IGameState makeMove(IGameState gameState) throws GameStateException;
+    IGameState makeMove(IGameState gameState) throws GameStateException, PlayerWinException;
 }

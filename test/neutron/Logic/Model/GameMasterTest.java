@@ -7,6 +7,7 @@ package neutron.Logic.Model;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import neutron.Logic.Exceptions.GameStateException;
+import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Interfaces.*;
 import neutron.Logic.Model.Heuristics.SimpleHeuristic;
 import org.junit.AfterClass;
@@ -99,6 +100,8 @@ public class GameMasterTest {
             gameState.getGameBorder().write();
             System.out.println();
         } catch (GameStateException ex) {
+        
+        } catch (PlayerWinException ex) {
         
         }
     }

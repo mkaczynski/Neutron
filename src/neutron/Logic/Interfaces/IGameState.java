@@ -11,4 +11,6 @@ public interface IGameState {
     IPlayer getActualPlayer();
     IPlayer getNextPlayer();
     void changePlayers();
+    
+    boolean isNeutronOnBaseField();
 }
