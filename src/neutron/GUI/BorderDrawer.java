@@ -2,6 +2,7 @@ package neutron.GUI;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 import neutron.Logic.Interfaces.BorderElementType;
 import neutron.Logic.Interfaces.IGameBorder;
 
@@ -11,9 +12,18 @@ import neutron.Logic.Interfaces.IGameBorder;
 public class BorderDrawer {
 
     private JLabel[][] images;
+    private JProgressBar progressBar;
     
-    public BorderDrawer(JLabel[][] images) {
+    public BorderDrawer(JLabel[][] images, JProgressBar progressBar) {
         this.images = images;
+        this.progressBar = progressBar;
+    
+        progressBar.setMinimum(0);
+        progressBar.setMaximum(100);
+    }
+    
+    public void setProgress(int value) {
+        progressBar.setValue(value);
     }
     
     /*

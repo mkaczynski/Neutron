@@ -33,7 +33,7 @@ public class Algorithm implements IAlgorithm {
         List<IGameState> moves = gameStateGenerator.getNexts(gameState);
         if(moves == null || moves.isEmpty()) {
             String msg = "Nie można wykonać kolejnych ruchów.";
-            throw new GameStateException(msg);
+            throw new GameStateException(msg, gameState);
         }
         
         // wyszukujemy i zwracamy ruch ktory jest maxem dla gracza ktory wywolal metode

@@ -1,7 +1,7 @@
 package neutron.Logic.Model;
 
-import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Exceptions.GameStateException;
+import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Interfaces.*;
 import neutron.Logic.Model.Moves.NMove;
 import neutron.Logic.Model.Moves.SMove;
@@ -38,7 +38,7 @@ public class GameMaster implements IGameMaster {
         //@note: kolejnosc graczy w nowym IGameState jest juz dobrze ustalona
     
         if(gameIsOver(newGameState)) {
-            throw new PlayerWinException();
+            throw new PlayerWinException(newGameState);
         }
         
         return newGameState;

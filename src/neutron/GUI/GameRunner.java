@@ -1,5 +1,7 @@
 package neutron.GUI;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import neutron.Logic.Exceptions.GameStateException;
 import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Interfaces.*;
@@ -16,18 +18,42 @@ public class GameRunner implements Runnable {
     private IAlgorithm firstPlayer;
     private IAlgorithm secondPlayer;
     private BorderDrawer drawer;
+    private Timer timer; 
+    private IResetGame reset;
     
-    public GameRunner(IAlgorithm firstPlayer, IAlgorithm secondPlayer, BorderDrawer drawer) {
+    private int counter;
+    private int time;
+    
+    public GameRunner(IAlgorithm firstPlayer, IAlgorithm secondPlayer, 
+            int time, BorderDrawer drawer, IResetGame reset) {
+        
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.drawer = drawer;
+        this.time = time;
+        this.reset = reset;
+        
+        timer = new Timer();
     }
 
+    private class ProgressSetter extends TimerTask {
+        
+        public ProgressSetter() {
+            counter = 0;
+        }
+        
+        @Override
+        public void run() {
+            ++counter;
+            drawer.setProgress((int)((double)counter / time * 100));
+        }    
+    }
+    
     @Override
     public void run() {
         startGame();
     }
-    
+        
     private void startGame(){
         
         //obydwaj gracze graja alfa - beta
@@ -38,7 +64,6 @@ public class GameRunner implements Runnable {
         IGameBorder gameBorder = gbg.generateNewGame(5);
         
         IGameState gameState = new GameState(gameBorder, p1, p2);
-        
         IGameMaster instance = new GameMaster();
     
         instance.initializeGame(gameState);
@@ -46,20 +71,27 @@ public class GameRunner implements Runnable {
         
         IGameBorder gb = gameState.getGameBorder();
         drawer.displayGameBorder(gb);
-        
+        timer.schedule(new ProgressSetter(), 0, 1000);
+                
         while(true) {
             try {
 
                 gameState = instance.makeMove(gameState);
                 drawer.displayGameBorder(gameState.getGameBorder());
+                counter = 0;
                 
             } catch (GameStateException ex) {
                 //@todo komunikat konca gry
                 break;
             } catch (PlayerWinException ex) {
-                //@todo komunikat konca gry
+                
+                drawer.displayGameBorder(ex.getGameState().getGameBorder());
+                reset.reset();
                 break;
             }
         }
+        
+        counter = 0;
+        timer.cancel();
     }
 }
