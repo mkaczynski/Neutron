@@ -44,7 +44,7 @@ public class Algorithm implements IAlgorithm {
         IGameState bestState = null;
         
         for(IGameState gs : moves) {
-            double val = Math.max(max, alfabeta(gs, depth - 1, Double.MIN_VALUE, Double.MAX_VALUE));
+            double val = Math.max(max, alfabeta(gs, 0, depth - 1, Double.MIN_VALUE, Double.MAX_VALUE));
             if(val >= max) {                
                 
                 bestState = gs;
@@ -59,7 +59,7 @@ public class Algorithm implements IAlgorithm {
         return bestState;
     }
     
-    private double alfabeta(IGameState gameState, int depth, double alpha, double beta) {
+    private double alfabeta(IGameState gameState, int player, int depth, double alpha, double beta) {
 
         if(depth == 0) {
             logger.writeMessage("Osiągnięto maksymalną głębokość przeszukiwania.");
@@ -72,10 +72,10 @@ public class Algorithm implements IAlgorithm {
             return heuristics.heuristicsValue(gameState);
         }
 
-        if(gameState.getActualPlayer().getPlayerNumber() == PlayerNumber.Player2) {
+        if(player % 2 == 1) {
             logger.writeMessage("Ruch przeciwnika.");
             for(IGameState gs : moves) {
-                beta = Math.min(beta, alfabeta(gs, depth - 1, alpha, beta));
+                beta = Math.min(beta, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
                 {
                     logger.writeMessage("Alfa-obcięcie.");
@@ -87,7 +87,7 @@ public class Algorithm implements IAlgorithm {
         else {
             logger.writeMessage("Ruch aktualnego gracza.");
             for(IGameState gs : moves) {
-                alpha = Math.max(alpha, alfabeta(gs, depth - 1, alpha, beta));
+                alpha = Math.max(alpha, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
                 {
                     logger.writeMessage("Beta-obcięcie.");
