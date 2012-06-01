@@ -15,8 +15,6 @@ import neutron.Logic.Model.Heuristics.SimpleHeuristic;
  * @author Marcin
  */
 public class MainWindow extends javax.swing.JFrame {
-
-    private IGameBorder gb;
     
     /**
      * Creates new form MainWindow
@@ -244,12 +242,9 @@ public class MainWindow extends javax.swing.JFrame {
     /*
      * Class for PlayThread realization.
      */
-    class Play extends MainWindow implements Runnable{
+    class Play implements Runnable{
         public void run(){
-            IGameBorder g = play();
-            borderToDisplay(g, jPanel4);
-            
-
+            play();
         }
     }
     
@@ -273,21 +268,17 @@ public class MainWindow extends javax.swing.JFrame {
     /*
      * Get display from the game border
      */
-    public void borderToDisplay(IGameBorder gb, JPanel p){
+    public void borderToDisplay(IGameBorder gb){
         for(int i=0;i<5;i++)
             for(int j=0;j<5;j++){
                 if(gb.getElement(i, j).equals(BorderElementType.White))
-                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/player.png")));
-                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/player.png")));
+                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/player.png")));
                 if(gb.getElement(i, j).equals(BorderElementType.Black))
-                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/enemy.png")));
-                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/enemy.png")));
+                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/enemy.png")));
                 if(gb.getElement(i, j).equals(BorderElementType.Neutron))
-                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/neutron.png")));
-                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/neutron.png")));
+                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/neutron.png")));
                 if(gb.getElement(i, j).equals(BorderElementType.Blank))
-                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));
-                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));                         
+                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));                         
                
             }
      }
@@ -310,7 +301,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
      
     
-    public IGameBorder play(){
+    public void play(){
         //obydwaj gracze graja alfa - beta
         IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, algorithm);
         IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, algorithm);
@@ -325,9 +316,9 @@ public class MainWindow extends javax.swing.JFrame {
         instance.initializeGame(gameState);
         gameState.getGameBorder().write();
         
-        return gameState.getGameBorder();
+        IGameBorder gb = gameState.getGameBorder();
+        borderToDisplay(gb);
         
-        /*
         System.out.println();
         try {
             
@@ -352,10 +343,11 @@ public class MainWindow extends javax.swing.JFrame {
             System.out.println();
             
         } catch (GameStateException ex) {
-        
+            
+            showLog(ex.getMessage());
         } catch (PlayerWinException ex) {
-        
-        }*/
+            showLog("test1");
+        }
     }
     
     static public void showLog (String info){
