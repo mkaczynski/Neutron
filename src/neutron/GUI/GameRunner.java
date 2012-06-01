@@ -81,7 +81,7 @@ public class GameRunner implements Runnable {
                 counter = 0;
                 
             } catch (GameStateException ex) {
-                //@todo komunikat konca gry
+                reset.reset();
                 break;
             } catch (PlayerWinException ex) {
                 
