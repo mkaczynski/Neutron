@@ -25,6 +25,10 @@ public class GameStateEvaluation {
         return gameState;
     }
     
+    public void setEvaluation(double ev) {
+        evaluation = ev;
+    }
+    
     public double getEvaluation() {
         return evaluation;
     }

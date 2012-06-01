@@ -1,5 +1,7 @@
 package neutron.Logic.Model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import neutron.Logic.Exceptions.GameStateException;
 import neutron.Logic.Interfaces.*;
@@ -21,35 +23,43 @@ public class Algorithm implements IAlgorithm {
     
     @Override
     public IGameState makeMove(IGameState gameState) throws GameStateException {
-        return alfabeta(gameState, 3); // @todo tymczasowo glebokosc 3, do zrobienia jest
-                                       // iteracyjne poglebianie algorytmu
-    }
-    
-    private IGameState alfabeta(IGameState gameState, int depth) throws GameStateException {        
         
         logger.writeMessage("Obliczenie ruchu dla stanu gry:");
         logger.writeMessage(gameState.toString());
-        
+
+        // pierwsza iteracja jest tym samym co posortowanie 
+        // wygenerowanych ruchow wg heurystyki
         List<IGameState> moves = gameStateGenerator.getNexts(gameState);
         if(moves == null || moves.isEmpty()) {
             String msg = "Nie można wykonać kolejnych ruchów.";
             throw new GameStateException(msg);
+        }        
+        List<GameStateEvaluation> em = ToGameStateEvaluations(moves);
+        IGameState bestState = em.get(0).getGameState();
+        
+        for(int i = 0; i < 2; ++i) { //iteracyjne poglebianie na stala glebokosc
+            Collections.sort(em, new GameStateEvaluationComparator());
+            bestState = alfabeta(gameState, em, 2 + i); 
         }
         
-        // wyszukujemy i zwracamy ruch ktory jest maxem dla gracza ktory wywolal metode
-        // to jest do refaktoryzacji, bo mozna od razu skorzystac z prywatenj metody alfa-beta,
-        // ale tak bylo mi latwiej na pierwszy ogien zlapac odpowiedni nowy ruch
-        
-        double max = Double.MIN_VALUE;
+        return bestState;
+    }
+    
+    private IGameState alfabeta(IGameState gameState, List<GameStateEvaluation> moves, int depth) throws GameStateException {        
+                
+        double alpha = moves.get(0).getEvaluation(); //Double.MIN_VALUE;
         IGameState bestState = null;
         
-        for(IGameState gs : moves) {
-            double val = Math.max(max, alfabeta(gs, 0, depth - 1, Double.MIN_VALUE, Double.MAX_VALUE));
-            if(val >= max) {                
-                
-                bestState = gs;
-                max = val;
-                
+        for(GameStateEvaluation gs : moves) {
+            
+            double val = Math.max(alpha, alfabeta(gs.getGameState(), 0, 
+                depth - 1, alpha, Double.MAX_VALUE));
+
+            gs.setEvaluation(val);
+            
+            if(val >= alpha) {                
+                bestState = gs.getGameState();
+                alpha = val;
             }
         }
 
@@ -57,6 +67,17 @@ public class Algorithm implements IAlgorithm {
         logger.writeMessage(bestState.toString()); // null argument exception nie ma prawa sie wydarzyc
 
         return bestState;
+    }
+    
+    private List<GameStateEvaluation> ToGameStateEvaluations(List<IGameState> list) {
+        
+        List<GameStateEvaluation> result = new ArrayList<GameStateEvaluation>();
+        for(IGameState gs : list) {
+            double e = heuristics.heuristicsValue(gs);
+            GameStateEvaluation gse = new GameStateEvaluation(gs, e);
+            result.add(gse);
+        }
+        return result;
     }
     
     private double alfabeta(IGameState gameState, int player, int depth, double alpha, double beta) {
