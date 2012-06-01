@@ -1,7 +1,9 @@
 package neutron.GUI;
 
+import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import neutron.Logic.Exceptions.GameStateException;
 import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Interfaces.*;
@@ -14,6 +16,8 @@ import neutron.Logic.Model.Heuristics.SimpleHeuristic;
  */
 public class MainWindow extends javax.swing.JFrame {
 
+    private IGameBorder gb;
+    
     /**
      * Creates new form MainWindow
      */
@@ -99,7 +103,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addComponent(errorLab)))
-                .addContainerGap())
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +206,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -242,7 +246,10 @@ public class MainWindow extends javax.swing.JFrame {
      */
     class Play extends MainWindow implements Runnable{
         public void run(){
-            play();
+            IGameBorder g = play();
+            borderToDisplay(g, jPanel4);
+            
+
         }
     }
     
@@ -266,20 +273,24 @@ public class MainWindow extends javax.swing.JFrame {
     /*
      * Get display from the game border
      */
-    public void borderToDisplay(GameBorder gb){
+    public void borderToDisplay(IGameBorder gb, JPanel p){
         for(int i=0;i<5;i++)
             for(int j=0;j<5;j++){
                 if(gb.getElement(i, j).equals(BorderElementType.White))
-                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/player.png")));
+                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/player.png")));
+                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/player.png")));
                 if(gb.getElement(i, j).equals(BorderElementType.Black))
-                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/enemy.png")));
+                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/enemy.png")));
+                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/enemy.png")));
                 if(gb.getElement(i, j).equals(BorderElementType.Neutron))
-                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/neutron.png")));
+                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/neutron.png")));
+                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/neutron.png")));
                 if(gb.getElement(i, j).equals(BorderElementType.Blank))
-                    images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));
+                    ((JLabel)p.getComponent(i*5 + j)).setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));
+                    //images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));                         
+               
             }
-        repaint();
-    }
+     }
     
     public GameBorder displayToBorder(){
         BorderElementType[][] bet = new BorderElementType[5][5];
@@ -299,10 +310,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
      
     
-    public void play(){
-         
-        
-        
+    public IGameBorder play(){
         //obydwaj gracze graja alfa - beta
         IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, algorithm);
         IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, algorithm);
@@ -315,9 +323,11 @@ public class MainWindow extends javax.swing.JFrame {
         IGameMaster instance = new GameMaster();
     
         instance.initializeGame(gameState);
+        gameState.getGameBorder().write();
         
-        borderToDisplay((GameBorder)gameState.getGameBorder());
+        return gameState.getGameBorder();
         
+        /*
         System.out.println();
         try {
             
@@ -345,7 +355,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         } catch (PlayerWinException ex) {
         
-        }
+        }*/
     }
     
     static public void showLog (String info){
