@@ -2,8 +2,11 @@ package neutron.GUI;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import neutron.Logic.Interfaces.BorderElementType;
-import neutron.Logic.Model.GameBorder;
+import neutron.Logic.Exceptions.GameStateException;
+import neutron.Logic.Exceptions.PlayerWinException;
+import neutron.Logic.Interfaces.*;
+import neutron.Logic.Model.*;
+import neutron.Logic.Model.Heuristics.SimpleHeuristic;
 
 /**
  *
@@ -14,9 +17,21 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
+    public MainWindow(){
         initComponents();
+        heuristics = new SimpleHeuristic();
+        gsg = new GameStateGenerator();
+        logger = new Logger();
+        algorithm = new Algorithm(heuristics, gsg, logger);        
     }
+    
+//    public MainWindow(IHeuristics h,IGameStateGenerator gsg,ILogger log,IAlgorithm alg) {
+//        initComponents();
+//        heuristics = new SimpleHeuristic();
+//        gsg = new GameStateGenerator();
+//        logger = new FakeLogger();
+//        algorithm = new Algorithm(heuristics,gsg,logger);
+//    }
 
     
     @SuppressWarnings("unchecked")
@@ -35,7 +50,9 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         images = new JLabel[5][5];
         JLabel jlab;
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        infoL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Neutron");
@@ -118,19 +135,33 @@ public class MainWindow extends javax.swing.JFrame {
         }
         jPanel4.setLayout(new java.awt.GridLayout(5, 5));
 
+        jButton1.setText("Graj");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
@@ -143,26 +174,35 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(infoL, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 89, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(infoL, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 49, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,7 +217,7 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
         );
 
         pack();
@@ -198,14 +238,27 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_setTActionPerformed
 
     /*
+     * Class for PlayThread realization.
+     */
+    class Play extends MainWindow implements Runnable{
+        public void run(){
+            play();
+        }
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Play pl = new Play();
+        Thread t = new Thread(pl);
+        t.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    /*
     * Create and display the form
     */
     public void showWindow(){
         java.awt.EventQueue.invokeLater(new Runnable() {
-
             public void run() {
                 new MainWindow().setVisible(true);
-                
             }
         });
     }
@@ -213,7 +266,7 @@ public class MainWindow extends javax.swing.JFrame {
     /*
      * Get display from the game border
      */
-    public void borderToDisplay(neutron.Logic.Model.GameBorder gb){
+    public void borderToDisplay(GameBorder gb){
         for(int i=0;i<5;i++)
             for(int j=0;j<5;j++){
                 if(gb.getElement(i, j).equals(BorderElementType.White))
@@ -225,6 +278,7 @@ public class MainWindow extends javax.swing.JFrame {
                 if(gb.getElement(i, j).equals(BorderElementType.Blank))
                     images[i][j].setIcon(new ImageIcon(getClass().getResource("/neutron/GUI/blank.png")));
             }
+        repaint();
     }
     
     public GameBorder displayToBorder(){
@@ -243,12 +297,74 @@ public class MainWindow extends javax.swing.JFrame {
         GameBorder ret = new GameBorder(bet);
         return ret;
     }
+     
+    
+    public void play(){
+         
+        
+        
+        //obydwaj gracze graja alfa - beta
+        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, algorithm);
+        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, algorithm);
+        
+        IGameBorderGenerator gbg = new GameBorderGenerator();
+        IGameBorder gameBorder = gbg.generateNewGame(5);
+        
+        IGameState gameState = new GameState(gameBorder, p1, p2);
+        
+        IGameMaster instance = new GameMaster();
+    
+        instance.initializeGame(gameState);
+        
+        borderToDisplay((GameBorder)gameState.getGameBorder());
+        
+        System.out.println();
+        try {
+            
+            gameState = instance.makeMove(gameState);
+            gameState.getGameBorder().write();
+            borderToDisplay((GameBorder)gameState.getGameBorder());
+            System.out.println();
+            
+            gameState = instance.makeMove(gameState);
+            gameState.getGameBorder().write();
+            borderToDisplay((GameBorder)gameState.getGameBorder());
+            System.out.println();
+            
+            gameState = instance.makeMove(gameState);
+            gameState.getGameBorder().write();
+            borderToDisplay((GameBorder)gameState.getGameBorder());
+            System.out.println();
+            
+            gameState = instance.makeMove(gameState);
+            gameState.getGameBorder().write();
+            borderToDisplay((GameBorder)gameState.getGameBorder());
+            System.out.println();
+            
+        } catch (GameStateException ex) {
+        
+        } catch (PlayerWinException ex) {
+        
+        }
+    }
+    
+    static public void showLog (String info){
+        infoL.setText(info);
+    }
     
     int secForAlgorithm = 0;
     JLabel[][] images;
+    
+    IHeuristics heuristics;
+    IGameStateGenerator gsg;
+    ILogger logger;
+    IAlgorithm algorithm;
+                
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLab;
     private javax.swing.JTextField howMuchTime;
+    private static javax.swing.JLabel infoL;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -259,3 +375,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton setT;
     // End of variables declaration//GEN-END:variables
 }
+
+

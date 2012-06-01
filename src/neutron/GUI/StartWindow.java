@@ -1,6 +1,5 @@
 package neutron.GUI;
 
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -125,7 +124,7 @@ public class StartWindow extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitActionPerformed
 
-        public void showWindow(){
+    static public void showWindow(){
         /*
          * Create and display the form
          */
