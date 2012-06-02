@@ -1,2 +1,5 @@
 build
 dist
+/doc/raport.aux
+/doc/raport.log
+/doc/raport.out
