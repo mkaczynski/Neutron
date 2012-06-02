@@ -44,7 +44,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jPanel5" alignment="0" max="32767" attributes="0"/>
-          <Component id="jPanel2" min="-2" pref="271" max="-2" attributes="0"/>
+          <Component id="jPanel2" alignment="0" pref="287" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -74,27 +74,36 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
+                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                          <Component id="errorLab" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="startButton" alignment="0" max="32767" attributes="0"/>
-                              <Component id="progressBar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="progressBar" alignment="0" pref="221" max="32767" attributes="0"/>
                               <Component id="firstPlayerAlgorithms" alignment="0" max="32767" attributes="0"/>
+                              <Component id="secondPlayerAlgorithms" alignment="1" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jLabel1" max="32767" attributes="0"/>
                                       <Component id="jLabel3" max="32767" attributes="0"/>
                                       <Component id="jLabel2" alignment="1" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="howMuchTime" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="secondPlayerAlgorithms" alignment="1" max="32767" attributes="0"/>
-                              <Component id="descriptionLabel" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel1" alignment="0" pref="61" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="howMuchTime" max="32767" attributes="0"/>
+                                      <Component id="firstMoveComboBox" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="errorLab" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="35" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -107,9 +116,14 @@
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="howMuchTime" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="firstMoveComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="errorLab" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="firstPlayerAlgorithms" min="-2" max="-2" attributes="0"/>
@@ -117,13 +131,11 @@
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="secondPlayerAlgorithms" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="34" max="32767" attributes="0"/>
-                  <Component id="descriptionLabel" min="-2" pref="16" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   <Component id="progressBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="startButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -131,7 +143,8 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Czas trwania rundy (s):"/>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Runda (s):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="howMuchTime">
@@ -171,13 +184,13 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Gracz pierwszy:"/>
+            <Property name="text" type="java.lang.String" value="Gracz czerwony:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Gracz drugi:"/>
+            <Property name="text" type="java.lang.String" value="Gracz zielony:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="secondPlayerAlgorithms">
@@ -189,7 +202,18 @@
         </Component>
         <Component class="javax.swing.JProgressBar" name="progressBar">
         </Component>
-        <Component class="javax.swing.JLabel" name="descriptionLabel">
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Pierwszy:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="firstMoveComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -203,10 +227,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
+              <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -232,7 +253,10 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel4" min="-2" pref="245" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jPanel4" min="-2" pref="245" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>

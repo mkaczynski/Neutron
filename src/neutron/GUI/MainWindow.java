@@ -11,7 +11,7 @@ import neutron.Logic.Model.GameBorder;
  * @author Marcin
  */
 public class MainWindow extends javax.swing.JFrame {
-    
+       
     /**
      * Creates new form MainWindow
      */
@@ -23,6 +23,11 @@ public class MainWindow extends javax.swing.JFrame {
         for(GUIAlgorithm a: algorithms.getList()) {
             firstPlayerAlgorithms.addItem(a);
             secondPlayerAlgorithms.addItem(a);
+        }
+        
+        FirstMovesList moves = new FirstMovesList();
+        for(IFirstMove fm: moves.getMoves()) {
+            firstMoveComboBox.addItem(fm);
         }
     }
     
@@ -41,7 +46,8 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         secondPlayerAlgorithms = new javax.swing.JComboBox();
         progressBar = new javax.swing.JProgressBar();
-        descriptionLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        firstMoveComboBox = new javax.swing.JComboBox();
         jPanel5 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -61,7 +67,8 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2.setMinimumSize(new java.awt.Dimension(150, 100));
         jPanel2.setPreferredSize(new java.awt.Dimension(150, 311));
 
-        jLabel1.setText("Czas trwania rundy (s):");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Runda (s):");
 
         errorLab.setFont(new java.awt.Font("Ubuntu", 1, 10)); // NOI18N
         errorLab.setForeground(new java.awt.Color(255, 0, 0));
@@ -75,10 +82,13 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("Gracz pierwszy:");
+        jLabel2.setText("Gracz czerwony:");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("Gracz drugi:");
+        jLabel3.setText("Gracz zielony:");
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Pierwszy:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -88,23 +98,29 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(startButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(progressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(firstPlayerAlgorithms, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(errorLab)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                            .addComponent(firstPlayerAlgorithms, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(secondPlayerAlgorithms, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(howMuchTime))
-                            .addComponent(secondPlayerAlgorithms, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(descriptionLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(errorLab)
-                        .addGap(0, 35, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(howMuchTime)
+                                    .addComponent(firstMoveComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,9 +128,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(howMuchTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(firstMoveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(errorLab)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(firstPlayerAlgorithms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -122,13 +142,11 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(secondPlayerAlgorithms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(22, 22, 22)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(startButton)
-                .addContainerGap())
+                .addGap(12, 12, 12))
         );
 
         errorLab.getAccessibleContext().setAccessibleName("Czas musi być dodatnią liczbą naturalną.");
@@ -162,7 +180,9 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -173,9 +193,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,7 +208,7 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
         );
 
         pack();
@@ -218,8 +236,11 @@ public class MainWindow extends javax.swing.JFrame {
         GUIAlgorithm fp = (GUIAlgorithm)firstPlayerAlgorithms.getSelectedItem();
         GUIAlgorithm sp = (GUIAlgorithm)secondPlayerAlgorithms.getSelectedItem();
         BorderDrawer drawer = new BorderDrawer(images, progressBar);
+        IFirstMove move = (IFirstMove)firstMoveComboBox.getSelectedItem();
         
-        GameRunner gr = new GameRunner(fp.getAlgorithm(), sp.getAlgorithm(), value, drawer, new ResetGame(this));
+        GameRunner gr = new GameRunner(
+                fp.getAlgorithm(), sp.getAlgorithm(), value, move, drawer, new ResetGame(this));
+        
         Thread t = new Thread(gr);
         t.start();
         
@@ -246,22 +267,6 @@ public class MainWindow extends javax.swing.JFrame {
         startButton.setEnabled(value);
         firstPlayerAlgorithms.setEnabled(value);
         secondPlayerAlgorithms.setEnabled(value);
-    }
-    
-    private boolean TryParseTime(int value)
-    {
-        try {
-            value = Integer.parseInt(howMuchTime.getText());
-            if(value < 0) {
-                return false;
-            }
-        }
-        catch(NumberFormatException ex)
-        {
-            return false;
-        }
-        
-        return false;
     }
     
     /*
@@ -303,13 +308,14 @@ public class MainWindow extends javax.swing.JFrame {
     IAlgorithm algorithm;
                 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel descriptionLabel;
     private javax.swing.JLabel errorLab;
+    private javax.swing.JComboBox firstMoveComboBox;
     private javax.swing.JComboBox firstPlayerAlgorithms;
     private javax.swing.JTextField howMuchTime;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

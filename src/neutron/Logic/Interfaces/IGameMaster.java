@@ -10,7 +10,7 @@ import neutron.Logic.Exceptions.PlayerWinException;
  */
 public interface IGameMaster {
     
-    void initializeGame(IGameState gameState);
+    void initializeGame(IGameState gameState, IFirstMove firstMove);
     
     IGameState makeMove(IGameState gameState, int time) throws GameStateException, PlayerWinException;
 }

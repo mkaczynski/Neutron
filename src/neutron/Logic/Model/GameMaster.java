@@ -13,8 +13,9 @@ import neutron.Utils.Position;
 public class GameMaster implements IGameMaster {
 
     @Override
-    public void initializeGame(IGameState gameState) {
+    public void initializeGame(IGameState gameState, IFirstMove firstMove) {
         
+        /*
         IGameBorder gb;
         if(gameState.getActualPlayer().getPawnsColor() == BorderElementType.White) {
             IMove m = new SMove();
@@ -24,7 +25,9 @@ public class GameMaster implements IGameMaster {
             IMove m = new NMove();
             gb = m.Move(gameState.getGameBorder(), BorderElementType.Black, 
                     new Position(gameState.getGameBorder().getBorderSize() - 1, 1));
-        }
+        }*/
+        
+        IGameBorder gb = firstMove.executeFirstMove(gameState.getGameBorder());
         
         gameState.setBorder(gb);
         gameState.changePlayers();

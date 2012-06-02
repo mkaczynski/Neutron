@@ -8,6 +8,8 @@ import neutron.Logic.Exceptions.GameStateException;
 import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Interfaces.*;
 import neutron.Logic.Model.Heuristics.SimpleHeuristic;
+import neutron.Logic.Model.Moves.SMove;
+import neutron.Utils.Position;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
@@ -44,10 +46,10 @@ public class GameMasterTest {
         IGameBorder gameBorder = gbg.generateNewGame(5);
         
         IGameState gameState = new GameState(gameBorder, p1, p2);
-        
         IGameMaster instance = new GameMaster();
-    
-        instance.initializeGame(gameState);
+        IFirstMove fm = new FirstMove(BorderElementType.White, new Position(0,0), new SMove(), "");
+        
+        instance.initializeGame(gameState, fm);
         
         assertEquals(p2, gameState.getActualPlayer());
         assertEquals(p1, gameState.getNextPlayer());
@@ -77,8 +79,9 @@ public class GameMasterTest {
         IGameState gameState = new GameState(gameBorder, p1, p2);
         
         IGameMaster instance = new GameMaster();
-    
-        instance.initializeGame(gameState);
+        IFirstMove fm = new FirstMove(BorderElementType.White, new Position(0,0), new SMove(), "");
+        
+        instance.initializeGame(gameState, fm);
         System.out.println();
         try {
             

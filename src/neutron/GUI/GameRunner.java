@@ -20,13 +20,15 @@ public class GameRunner implements Runnable {
     private BorderDrawer drawer;
     private Timer timer; 
     private IResetGame reset;
+    private IFirstMove move;
     
     private int counter;
     private int time;
     
     public GameRunner(IAlgorithm firstPlayer, IAlgorithm secondPlayer, 
-            int time, BorderDrawer drawer, IResetGame reset) {
+            int time, IFirstMove move, BorderDrawer drawer, IResetGame reset) {
         
+        this.move = move;
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.drawer = drawer;
@@ -56,9 +58,11 @@ public class GameRunner implements Runnable {
         
     private void startGame(){
         
-        //obydwaj gracze graja alfa - beta
-        IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, firstPlayer);
-        IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, secondPlayer);
+        //IPlayer p1 = new Player(PlayerNumber.Player1, BorderElementType.White, firstPlayer);
+        //IPlayer p2 = new Player(PlayerNumber.Player2, BorderElementType.Black, secondPlayer);
+        
+        IPlayer p1 = move.getFirstPlayer(firstPlayer);
+        IPlayer p2 = move.getSecondPlayer(secondPlayer);
         
         IGameBorderGenerator gbg = new GameBorderGenerator();
         IGameBorder gameBorder = gbg.generateNewGame(5);
@@ -66,7 +70,7 @@ public class GameRunner implements Runnable {
         IGameState gameState = new GameState(gameBorder, p1, p2);
         IGameMaster instance = new GameMaster();
     
-        instance.initializeGame(gameState);
+        instance.initializeGame(gameState, move);
         gameState.getGameBorder().write();
         
         IGameBorder gb = gameState.getGameBorder();
