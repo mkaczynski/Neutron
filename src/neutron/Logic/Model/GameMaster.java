@@ -31,10 +31,10 @@ public class GameMaster implements IGameMaster {
     }
     
     @Override
-    public IGameState makeMove(IGameState gameState) throws GameStateException, PlayerWinException {
+    public IGameState makeMove(IGameState gameState, int time) throws GameStateException, PlayerWinException {
         
         IPlayer actualPlayer = gameState.getActualPlayer();
-        IGameState newGameState = actualPlayer.getAlgorithm().makeMove(gameState);
+        IGameState newGameState = actualPlayer.getAlgorithm().makeMove(gameState, time);
         //@note: kolejnosc graczy w nowym IGameState jest juz dobrze ustalona
     
         if(gameIsOver(newGameState)) {

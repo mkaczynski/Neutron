@@ -20,7 +20,7 @@ public class Algorithm implements IAlgorithm {
         this.heuristics = heuristics;
         this.gameStateGenerator = gameStateGenerator;
         this.logger = logger;
-    
+        
         timer = new Timer();
     }
     
@@ -32,10 +32,10 @@ public class Algorithm implements IAlgorithm {
     }
     
     @Override
-    public IGameState makeMove(IGameState gameState) throws GameStateException {
+    public IGameState makeMove(IGameState gameState, int time) throws GameStateException {
         
         canExecute = true;
-        timer.schedule(new StopCalculation(), 10000); // koniec obliczen po 30s
+        timer.schedule(new StopCalculation(), time * 1000);
         
         logger.writeMessage("Obliczenie ruchu dla stanu gry:");
         logger.writeMessage(gameState.toString());

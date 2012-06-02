@@ -4,16 +4,14 @@
  */
 package neutron.Logic.Model;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import neutron.Logic.Exceptions.GameStateException;
 import neutron.Logic.Exceptions.PlayerWinException;
 import neutron.Logic.Interfaces.*;
 import neutron.Logic.Model.Heuristics.SimpleHeuristic;
 import org.junit.AfterClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author Marcin
@@ -84,19 +82,19 @@ public class GameMasterTest {
         System.out.println();
         try {
             
-            gameState = instance.makeMove(gameState);
+            gameState = instance.makeMove(gameState, 2);
             gameState.getGameBorder().write();
             System.out.println();
             
-            gameState = instance.makeMove(gameState);
+            gameState = instance.makeMove(gameState, 2);
             gameState.getGameBorder().write();
             System.out.println();
             
-            gameState = instance.makeMove(gameState);
+            gameState = instance.makeMove(gameState, 2);
             gameState.getGameBorder().write();
             System.out.println();
             
-            gameState = instance.makeMove(gameState);
+            gameState = instance.makeMove(gameState, 2);
             gameState.getGameBorder().write();
             System.out.println();
         } catch (GameStateException ex) {

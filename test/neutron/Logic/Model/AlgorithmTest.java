@@ -51,7 +51,7 @@ public class AlgorithmTest {
         IAlgorithm instance = new Algorithm(heuristics, gameStateGenerator, logger);
         
         //IGameState expResult = null;
-        IGameState result = instance.makeMove(gameState);
+        IGameState result = instance.makeMove(gameState, 2);
         
         assertNotNull(result);
         //assertEquals(expResult, result);

@@ -11,5 +11,5 @@ public interface IAlgorithm {
      * 
      * gameState - initial game state
      */
-    IGameState makeMove(IGameState gameState) throws GameStateException;
+    IGameState makeMove(IGameState gameState, int time) throws GameStateException;
 }

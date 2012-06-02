@@ -12,5 +12,5 @@ public interface IGameMaster {
     
     void initializeGame(IGameState gameState);
     
-    IGameState makeMove(IGameState gameState) throws GameStateException, PlayerWinException;
+    IGameState makeMove(IGameState gameState, int time) throws GameStateException, PlayerWinException;
 }

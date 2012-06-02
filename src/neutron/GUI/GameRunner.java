@@ -76,7 +76,7 @@ public class GameRunner implements Runnable {
         while(true) {
             try {
 
-                gameState = instance.makeMove(gameState);
+                gameState = instance.makeMove(gameState, time);
                 drawer.displayGameBorder(gameState.getGameBorder());
                 counter = 0;
                 
