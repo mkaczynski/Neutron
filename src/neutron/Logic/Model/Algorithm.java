@@ -43,13 +43,14 @@ public class Algorithm implements IAlgorithm {
         // pierwsza iteracja jest tym samym co posortowanie 
         // wygenerowanych ruchow wg heurystyki
         List<IGameState> moves = gameStateGenerator.getNexts(gameState);
+                
         if(moves == null || moves.isEmpty()) {
             String msg = "Nie można wykonać kolejnych ruchów.";
             throw new GameStateException(msg, gameState);
         }
         
         List<GameStateEvaluation> em = ToGameStateEvaluations(moves);
-        IGameState bestState = em.get(0).getGameState();
+        GameStateEvaluation bestState = em.get(0);
 
         int i = 1;
         while(true) { 
@@ -68,25 +69,27 @@ public class Algorithm implements IAlgorithm {
         }
         
         System.out.println(i);
-        bestState.getGameBorder().write();
-        return bestState;
+        System.out.println(bestState.getEvaluation());
+        bestState.getGameState().getGameBorder().write();
+        return bestState.getGameState();
     }
     
-    private IGameState alfabeta(IGameState gameState, List<GameStateEvaluation> moves, int depth) 
+    private GameStateEvaluation alfabeta(IGameState gameState, List<GameStateEvaluation> moves, int depth) 
             throws GameStateException, TimeoutException {        
                 
         double alpha = moves.get(0).getEvaluation(); //Double.MIN_VALUE;
-        IGameState bestState = null;
+        GameStateEvaluation bestState = moves.get(0);
         
         for(GameStateEvaluation gs : moves) {
             
-            double val = Math.max(alpha, alfabeta(gs.getGameState(), 0, 
-                depth - 1, Double.MIN_VALUE, alpha)); //@todo - czy to jest dobrze?
+            double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 0, 
+                depth - 1, Double.MIN_VALUE, Double.MAX_VALUE);//); //@todo - czy to jest dobrze?
 
             gs.setEvaluation(val);
             
-            if(val >= alpha) {                
-                bestState = gs.getGameState();
+            if(val > alpha) {                
+                bestState = gs;
+                //bestState.getGameBorder().write();
                 alpha = val;
             }
         }
@@ -101,7 +104,12 @@ public class Algorithm implements IAlgorithm {
         
         List<GameStateEvaluation> result = new ArrayList<GameStateEvaluation>();
         for(IGameState gs : list) {
+            gs.changePlayers();
             double e = heuristics.heuristicsValue(gs);
+            if(e == 100) {
+                gs.getGameBorder().write();
+            }
+            gs.changePlayers();
             GameStateEvaluation gse = new GameStateEvaluation(gs, e);
             result.add(gse);
         }
@@ -117,18 +125,27 @@ public class Algorithm implements IAlgorithm {
         
         if(depth == 0) {
             logger.writeMessage("Osiągnięto maksymalną głębokość przeszukiwania.");
-            return heuristics.heuristicsValue(gameState);
+            gameState.changePlayers();
+            double d = heuristics.heuristicsValue(gameState);
+            gameState.changePlayers();
+            return d;
         }
         
         if(gameState.isNeutronOnBaseField()) {
             logger.writeMessage("Gra jest skonczona - neutron znajduje sie w jednym z pol bazowych.");
-            return heuristics.heuristicsValue(gameState);    
+            gameState.changePlayers();
+            double d = heuristics.heuristicsValue(gameState);
+            gameState.changePlayers();
+            return d;
         }
         
         List<IGameState> moves = gameStateGenerator.getNexts(gameState);
         if(moves == null || moves.isEmpty()) {
             logger.writeMessage("Nie ma więcej ruchów do przeglądania.");
-            return heuristics.heuristicsValue(gameState);
+            gameState.changePlayers();
+            double d = heuristics.heuristicsValue(gameState);
+            gameState.changePlayers();
+            return d;
         }
 
         if(player % 2 == 1) {
