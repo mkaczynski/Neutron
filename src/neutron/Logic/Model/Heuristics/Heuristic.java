@@ -1,0 +1,162 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package neutron.Logic.Model.Heuristics;
+
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
+import neutron.Logic.Interfaces.*;
+import neutron.Utils.Position;
+
+/**
+ *
+ * @author programer
+ */
+public class Heuristic implements IHeuristicsComplexed {
+    
+    IGameState m_gameState;
+    IGameBorder m_gameBorder;
+    IPlayer m_actualPlayer;
+    BorderElementType[][] m_Board;
+    int m_lasyBoardIndex; //ostatni index planszy
+    int[] m_iaTypes = {1, 2, 3};
+    int m_iType = 1;
+    
+    private static final int[] UP = {0,1}; //{x,y}
+    private static final int[] DOWN = {0,-1};
+    private static final int[] LEFT = {-1,0};
+    private static final int[] RIGHT = {1,0};
+    private static final int[] UPLEFT = {-1,1};
+    private static final int[] UPRIGHT = {1,1};
+    private static final int[] DOWNLEFT = {-1,-1};
+    private static final int[] DOWNRIGHT = {1,-1};
+    
+    private static final int[][] MOVES = {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
+	
+    
+    
+    @Override
+    public void setHeuristicType(int type){
+        m_iType = type;
+    }
+    
+    @Override
+    public int[] getHeuristicsTypes(){
+        return m_iaTypes;
+    }
+    
+    @Override
+    public double heuristicsValue(IGameState gameState){
+        m_gameState = gameState;
+        m_gameBorder = gameState.getGameBorder();
+        m_actualPlayer = gameState.getActualPlayer();
+        m_Board = m_gameBorder.getBorder();
+        m_lasyBoardIndex = m_gameBorder.getBorderSize()-1;
+        
+        switch(m_iType){
+            case 1:
+                return heuristic1();
+            case 2:
+                
+                break;
+                
+            case 3:
+            default:
+                
+                break;
+        }
+        
+        return -100;
+    }
+    
+    private double heuristic1(){
+
+        //-pionki przeciwnika zablokowane
+       if(enemyBlocked())
+           return 100;
+        //-neutron u przeciwnika
+       if(m_gameBorder.getNeutronPosition().getY() == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? m_lasyBoardIndex : 0))
+           return 100;
+        
+        //-neutron zagraz linii przeciwnika - przeciwnik bedzie musial sie bronic
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
+               return 25;
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
+               return 25;
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
+               return 25;
+        
+       //najgorszy mozliwy ruch, 0 bo wystawiamy sie, przeciwnik moze w jednym ruchu wygrac
+      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
+               return 0;
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
+               return 0;
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
+               return 0;
+       
+       
+       
+       return 10;
+    }
+    
+    
+    private boolean canNeutronReachOurLine(Position neutron, int[] move){
+        
+        int x, y;
+        x= neutron.getX();
+        y= neutron.getY();
+        
+        for(int i=0; i<((move[1]>0) ? (m_lasyBoardIndex-y) : y); ++i){
+            if(x<0 || x>m_lasyBoardIndex || y<0 || y>m_lasyBoardIndex) return false;
+            if(m_Board[x+move[0]][y+move[1]] != BorderElementType.Blank) return false;
+            x+=move[0];
+            y+=move[1];
+        }
+        return true;
+        
+    }
+    
+    
+    private boolean enemyBlocked(){
+    
+        int x,y;
+        for(int i=0; i<5; ++i) //dla kazdego pionka
+            for(int j=0; j<5; ++j){
+                if(m_Board[i][j] == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? BorderElementType.Black : BorderElementType.White))
+                {
+                    for(int m=0; m<8; ++m){
+                        x=i+MOVES[m][0];
+                        y=j+MOVES[m][1];
+                        
+                        if(x>= 0 && x<=m_lasyBoardIndex && y>=0 && y<=m_lasyBoardIndex){
+                            if(m_Board[x][y]==BorderElementType.Blank) return false;
+                        }
+                    }
+                }
+            }
+        return true;
+    }
+    
+    
+    
+    private boolean canNeutronReachEnemyEdge(Position neutronPosition, int[] move){
+        
+        int x,y, lastBordIndex;//Board is square
+        x=neutronPosition.getX();
+        y=neutronPosition.getY();
+        lastBordIndex = m_gameBorder.getBorderSize()-1;
+        
+        
+        
+        for(int i=0; i < ((move[1]>0) ? (lastBordIndex - y) : (y)); ++i){
+            
+            if(x<0 || x>lastBordIndex || y<0 || y>lastBordIndex) return false;
+            if(m_Board[x+move[0]][y+move[1]] != BorderElementType.Blank) return false;
+            x+=move[0];
+            y+=move[1];
+        }
+        
+        return true;
+    }
+    
+}
