@@ -4,7 +4,6 @@
  */
 package neutron.Logic.Model.Heuristics;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 import neutron.Logic.Interfaces.*;
 import neutron.Utils.Position;
 
@@ -95,7 +94,7 @@ public class Heuristic implements IHeuristicsComplexed {
                return 0;
        
        
-       
+       //w kazdym innym przypadku
        return 10;
     }
     
@@ -107,7 +106,7 @@ public class Heuristic implements IHeuristicsComplexed {
         y= neutron.getY();
         
         for(int i=0; i<((move[1]>0) ? (m_lasyBoardIndex-y) : y); ++i){
-            if(x<0 || x>m_lasyBoardIndex || y<0 || y>m_lasyBoardIndex) return false;
+            if(x+move[0]<0 || x+move[0]>m_lasyBoardIndex || y+move[1]<0 || y+move[1]>m_lasyBoardIndex) return false;
             if(m_Board[x+move[0]][y+move[1]] != BorderElementType.Blank) return false;
             x+=move[0];
             y+=move[1];
@@ -145,12 +144,12 @@ public class Heuristic implements IHeuristicsComplexed {
         x=neutronPosition.getX();
         y=neutronPosition.getY();
         lastBordIndex = m_gameBorder.getBorderSize()-1;
+        int condition = ((move[1]>0) ? (lastBordIndex - y) : (y));
         
         
-        
-        for(int i=0; i < ((move[1]>0) ? (lastBordIndex - y) : (y)); ++i){
+        for(int i=0; i < condition; ++i){
             
-            if(x<0 || x>lastBordIndex || y<0 || y>lastBordIndex) return false;
+            if(x+move[0]<0 || x+move[0]>lastBordIndex || y+move[1]<0 || y+move[1]>lastBordIndex) return false;
             if(m_Board[x+move[0]][y+move[1]] != BorderElementType.Blank) return false;
             x+=move[0];
             y+=move[1];
