@@ -70,7 +70,6 @@ public class Algorithm implements IAlgorithm {
         
         System.out.println(i);
         System.out.println(bestState.getEvaluation());
-        bestState.getGameState().getGameBorder().write();
         return bestState.getGameState();
     }
     
@@ -81,15 +80,14 @@ public class Algorithm implements IAlgorithm {
         GameStateEvaluation bestState = moves.get(0);
         
         for(GameStateEvaluation gs : moves) {
-            
-            double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 0, 
+                       
+            double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 1, 
                 depth - 1, Double.MIN_VALUE, Double.MAX_VALUE);//); //@todo - czy to jest dobrze?
 
             gs.setEvaluation(val);
             
             if(val > alpha) {                
                 bestState = gs;
-                //bestState.getGameBorder().write();
                 alpha = val;
             }
         }
@@ -106,9 +104,6 @@ public class Algorithm implements IAlgorithm {
         for(IGameState gs : list) {
             gs.changePlayers();
             double e = heuristics.heuristicsValue(gs);
-            if(e == 100) {
-                gs.getGameBorder().write();
-            }
             gs.changePlayers();
             GameStateEvaluation gse = new GameStateEvaluation(gs, e);
             result.add(gse);
