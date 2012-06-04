@@ -70,13 +70,16 @@ public class Heuristic implements IHeuristicsComplexed {
     
     private double heuristic1(){
 
-          //-neutron u przeciwnika
-       if(m_gameBorder.getNeutronPosition().getY() == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? 0 : m_lastBoardIndex))
+       //-neutron u przeciwnika
+       int x = m_gameBorder.getNeutronPosition().getX();
+       if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
            return 100;
-        
+       else if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? 0 : m_lastBoardIndex))
+            return 0;
+            
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
-           return 100;
+           return 75;
       
         
         //-neutron zagraz linii przeciwnika - przeciwnik bedzie musial sie bronic
@@ -104,8 +107,8 @@ public class Heuristic implements IHeuristicsComplexed {
     private boolean canNeutronReachOurLine(Position neutron, int[] move){
         
         int x, y;
-        x= neutron.getX();
-        y= neutron.getY();
+        x= neutron.getY();
+        y= neutron.getX();
         
         for(int i=0; i<((move[1]>0) ? (m_lastBoardIndex-y) : y); ++i){
             if(x+move[0]<0 || x+move[0]>m_lastBoardIndex || y+move[1]<0 || y+move[1]>m_lastBoardIndex) return false;
@@ -143,8 +146,8 @@ public class Heuristic implements IHeuristicsComplexed {
     private boolean canNeutronReachEnemyEdge(Position neutronPosition, int[] move){
         
         int x,y, lastBordIndex;//Board is square
-        x=neutronPosition.getX();
-        y=neutronPosition.getY();
+        x=neutronPosition.getY();
+        y=neutronPosition.getX();
         lastBordIndex = m_gameBorder.getBorderSize()-1;
         int condition = ((move[1]>0) ? (lastBordIndex - y) : (y));
         
