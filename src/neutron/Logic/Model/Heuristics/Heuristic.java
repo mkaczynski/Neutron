@@ -17,7 +17,7 @@ public class Heuristic implements IHeuristicsComplexed {
     IGameBorder m_gameBorder;
     IPlayer m_actualPlayer;
     BorderElementType[][] m_Board;
-    int m_lasyBoardIndex; //ostatni index planszy
+    int m_lastBoardIndex; //ostatni index planszy
     int[] m_iaTypes = {1, 2, 3};
     int m_iType = 1;
     
@@ -50,7 +50,7 @@ public class Heuristic implements IHeuristicsComplexed {
         m_gameBorder = gameState.getGameBorder();
         m_actualPlayer = gameState.getActualPlayer();
         m_Board = m_gameBorder.getBorder();
-        m_lasyBoardIndex = m_gameBorder.getBorderSize()-1;
+        m_lastBoardIndex = m_gameBorder.getBorderSize()-1;
         
         switch(m_iType){
             case 1:
@@ -70,12 +70,14 @@ public class Heuristic implements IHeuristicsComplexed {
     
     private double heuristic1(){
 
+          //-neutron u przeciwnika
+       if(m_gameBorder.getNeutronPosition().getY() == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? 0 : m_lastBoardIndex))
+           return 100;
+        
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
            return 100;
-        //-neutron u przeciwnika
-       if(m_gameBorder.getNeutronPosition().getY() == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? m_lasyBoardIndex : 0))
-           return 100;
+      
         
         //-neutron zagraz linii przeciwnika - przeciwnik bedzie musial sie bronic
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
@@ -105,8 +107,8 @@ public class Heuristic implements IHeuristicsComplexed {
         x= neutron.getX();
         y= neutron.getY();
         
-        for(int i=0; i<((move[1]>0) ? (m_lasyBoardIndex-y) : y); ++i){
-            if(x+move[0]<0 || x+move[0]>m_lasyBoardIndex || y+move[1]<0 || y+move[1]>m_lasyBoardIndex) return false;
+        for(int i=0; i<((move[1]>0) ? (m_lastBoardIndex-y) : y); ++i){
+            if(x+move[0]<0 || x+move[0]>m_lastBoardIndex || y+move[1]<0 || y+move[1]>m_lastBoardIndex) return false;
             if(m_Board[x+move[0]][y+move[1]] != BorderElementType.Blank) return false;
             x+=move[0];
             y+=move[1];
@@ -121,13 +123,13 @@ public class Heuristic implements IHeuristicsComplexed {
         int x,y;
         for(int i=0; i<5; ++i) //dla kazdego pionka
             for(int j=0; j<5; ++j){
-                if(m_Board[i][j] == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? BorderElementType.Black : BorderElementType.White))
+                if(m_Board[i][j] == ((m_actualPlayer.getPawnsColor()==BorderElementType.Black) ? BorderElementType.White : BorderElementType.Black))
                 {
                     for(int m=0; m<8; ++m){
                         x=i+MOVES[m][0];
                         y=j+MOVES[m][1];
                         
-                        if(x>= 0 && x<=m_lasyBoardIndex && y>=0 && y<=m_lasyBoardIndex){
+                        if(x>= 0 && x<=m_lastBoardIndex && y>=0 && y<=m_lastBoardIndex){
                             if(m_Board[x][y]==BorderElementType.Blank) return false;
                         }
                     }
