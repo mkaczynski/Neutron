@@ -120,6 +120,11 @@ public class Algorithm implements IAlgorithm {
             return heuristics.heuristicsValue(gameState);
         }
         
+        if(gameState.isNeutronOnBaseField()) {
+            logger.writeMessage("Gra jest skonczona - neutron znajduje sie w jednym z pol bazowych.");
+            return heuristics.heuristicsValue(gameState);    
+        }
+        
         List<IGameState> moves = gameStateGenerator.getNexts(gameState);
         if(moves == null || moves.isEmpty()) {
             logger.writeMessage("Nie ma więcej ruchów do przeglądania.");
