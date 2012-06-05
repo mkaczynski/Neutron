@@ -50,9 +50,9 @@ public class Algorithm implements IAlgorithm {
         }
         
         List<GameStateEvaluation> em = ToGameStateEvaluations(moves);
-        GameStateEvaluation bestState = em.get(0);
+        GameStateEvaluation bestState = null;// = em.get(0);
 
-        int i = 1;
+        int i = -1;
         while(true) { 
             
             if(!canExecute) {
@@ -61,28 +61,37 @@ public class Algorithm implements IAlgorithm {
             
             Collections.sort(em, new GameStateEvaluationComparator());
             try {
-                bestState = alfabeta(gameState, em, ++i);                 
+                bestState = alfabeta(gameState, em, i += 2);                 
+
+                System.out.print("\nWybrano best state na poziomie ");
+                System.out.print(i);
+                System.out.print(" ");
+                System.out.println(bestState.getEvaluation());
+            
+                bestState.getGameState().getGameBorder().write();
             }
             catch(TimeoutException ex) {
                 break;
             }            
         }
         
-        System.out.println(i);
-        System.out.println(bestState.getEvaluation());
+
+        //bestState.getGameState().getGameBorder().write();
         return bestState.getGameState();
     }
     
     private GameStateEvaluation alfabeta(IGameState gameState, List<GameStateEvaluation> moves, int depth) 
             throws GameStateException, TimeoutException {        
                 
-        double alpha = moves.get(0).getEvaluation(); //Double.MIN_VALUE;
+        double alpha = Double.MIN_VALUE*-1; //moves.get(0).getEvaluation(); //Double.MIN_VALUE;
         GameStateEvaluation bestState = moves.get(0);
         
         for(GameStateEvaluation gs : moves) {
-                       
+     
+            //gs.getGameState().getGameBorder().write();
+            
             double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 1, 
-                depth - 1, Double.MIN_VALUE, Double.MAX_VALUE);//); //@todo - czy to jest dobrze?
+                depth - 1, Double.MIN_VALUE*-1, Double.MAX_VALUE);//); //@todo - czy to jest dobrze?
 
             gs.setEvaluation(val);
             
@@ -95,6 +104,11 @@ public class Algorithm implements IAlgorithm {
         logger.writeMessage("Najlepszy znaleziony ruch dla gracza to:");
         logger.writeMessage(bestState.toString()); // null argument exception nie ma prawa sie wydarzyc
 
+        for(GameStateEvaluation gs : moves) {
+            System.out.print(gs.getEvaluation());
+            System.out.print(" ");
+        }
+        
         return bestState;
     }
     
@@ -146,6 +160,9 @@ public class Algorithm implements IAlgorithm {
         if(player % 2 == 1) {
             logger.writeMessage("Ruch przeciwnika.");
             for(IGameState gs : moves) {
+                
+                //gs.getGameBorder().write();
+                
                 beta = Math.min(beta, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
                 {
