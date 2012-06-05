@@ -11,7 +11,7 @@ import neutron.Utils.Position;
  *
  * @author programer
  */
-public class Heuristic implements IHeuristics {
+public class Heuristic implements IHeuristicsComplexed {
     
     IGameState m_gameState;
     IGameBorder m_gameBorder;
@@ -31,6 +31,18 @@ public class Heuristic implements IHeuristics {
     private static final int[] DOWNRIGHT = {1,-1};
     
     private static final int[][] MOVES = {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
+	
+    
+    
+    @Override
+    public void setHeuristicType(int type){
+        m_iType = type;
+    }
+    
+    @Override
+    public int[] getHeuristicsTypes(){
+        return m_iaTypes;
+    }
     
     @Override
     public double heuristicsValue(IGameState gameState){
@@ -40,41 +52,56 @@ public class Heuristic implements IHeuristics {
         m_Board = m_gameBorder.getBorder();
         m_lastBoardIndex = m_gameBorder.getBorderSize()-1;
         
-        return heuristic1();
+        switch(m_iType){
+            case 1:
+                return heuristic1();
+            case 2:
+                
+                break;
+                
+            case 3:
+            default:
+                
+                break;
+        }
+        
+        return -100;
     }
     
     private double heuristic1(){
 
        //-neutron u przeciwnika
+       int x = m_gameBorder.getNeutronPosition().getX();
 
-       int y = m_gameBorder.getNeutronPosition().getX();
-       if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
+       if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
            return 0;
-       if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
+       else if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
             return 100;
-  
+ 
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
            return 75;
       
         
+        //-neutron zagraz linii przeciwnika - przeciwnik bedzie musial sie bronic
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
-               return 10;
+               return 25;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
-               return 10;
+               return 25;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
-               return 10;
-
-       
+               return 25;
+        
+       //najgorszy mozliwy ruch, 0 bo wystawiamy sie, przeciwnik moze w jednym ruchu wygrac
       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
-               return 25;
+               return 0;
        if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
-               return 25;
+               return 0;
        if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
-               return 25;
-              
+               return 0;
+       
+       
        //w kazdym innym przypadku
-       return 50;
+       return 10;
     }
     
     
@@ -114,6 +141,8 @@ public class Heuristic implements IHeuristics {
             }
         return true;
     }
+    
+    
     
     private boolean canNeutronReachEnemyEdge(Position neutronPosition, int[] move){
         
