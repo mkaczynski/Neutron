@@ -61,7 +61,7 @@ public class Algorithm implements IAlgorithm {
             
             Collections.sort(em, new GameStateEvaluationComparator());
             try {
-                bestState = alfabeta(gameState, em, i += 2);                 
+                bestState = alfabeta(em, i += 2);                 
 
                 System.out.print("\nWybrano best state na poziomie ");
                 System.out.print(i);
@@ -75,21 +75,17 @@ public class Algorithm implements IAlgorithm {
             }            
         }
         
-
-        //bestState.getGameState().getGameBorder().write();
         return bestState.getGameState();
     }
     
-    private GameStateEvaluation alfabeta(IGameState gameState, List<GameStateEvaluation> moves, int depth) 
+    private GameStateEvaluation alfabeta(List<GameStateEvaluation> moves, int depth) 
             throws GameStateException, TimeoutException {        
                 
         double alpha = Double.MIN_VALUE*-1; //moves.get(0).getEvaluation(); //Double.MIN_VALUE;
-        GameStateEvaluation bestState = moves.get(0);
+        GameStateEvaluation bestState = null;//moves.get(0);
         
         for(GameStateEvaluation gs : moves) {
-     
-            //gs.getGameState().getGameBorder().write();
-            
+                 
             double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 1, 
                 depth - 1, Double.MIN_VALUE*-1, Double.MAX_VALUE);//); //@todo - czy to jest dobrze?
 
@@ -104,10 +100,10 @@ public class Algorithm implements IAlgorithm {
         logger.writeMessage("Najlepszy znaleziony ruch dla gracza to:");
         logger.writeMessage(bestState.toString()); // null argument exception nie ma prawa sie wydarzyc
 
-        for(GameStateEvaluation gs : moves) {
-            System.out.print(gs.getEvaluation());
-            System.out.print(" ");
-        }
+        //for(GameStateEvaluation gs : moves) {
+        //    System.out.print(gs.getEvaluation());
+        //    System.out.print(" ");
+        //}
         
         return bestState;
     }

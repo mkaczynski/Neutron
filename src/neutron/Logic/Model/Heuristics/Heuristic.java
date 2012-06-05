@@ -72,11 +72,13 @@ public class Heuristic implements IHeuristicsComplexed {
 
        //-neutron u przeciwnika
        int x = m_gameBorder.getNeutronPosition().getX();
+
        if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
            return 0;
        else if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
             return 100;
-            
+  
+/*
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
            return 75;
@@ -97,10 +99,10 @@ public class Heuristic implements IHeuristicsComplexed {
                return 0;
        if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
                return 0;
-       
+*/       
        
        //w kazdym innym przypadku
-       return 10;
+       return 50;
     }
     
     
