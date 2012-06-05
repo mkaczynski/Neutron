@@ -11,7 +11,7 @@ import neutron.Utils.Position;
  *
  * @author programer
  */
-public class Heuristic implements IHeuristicsComplexed {
+public class Heuristic implements IHeuristics {
     
     IGameState m_gameState;
     IGameBorder m_gameBorder;
@@ -31,18 +31,6 @@ public class Heuristic implements IHeuristicsComplexed {
     private static final int[] DOWNRIGHT = {1,-1};
     
     private static final int[][] MOVES = {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
-	
-    
-    
-    @Override
-    public void setHeuristicType(int type){
-        m_iType = type;
-    }
-    
-    @Override
-    public int[] getHeuristicsTypes(){
-        return m_iaTypes;
-    }
     
     @Override
     public double heuristicsValue(IGameState gameState){
@@ -52,20 +40,7 @@ public class Heuristic implements IHeuristicsComplexed {
         m_Board = m_gameBorder.getBorder();
         m_lastBoardIndex = m_gameBorder.getBorderSize()-1;
         
-        switch(m_iType){
-            case 1:
-                return heuristic1();
-            case 2:
-                
-                break;
-                
-            case 3:
-            default:
-                
-                break;
-        }
-        
-        return -100;
+        return heuristic1();
     }
     
     private double heuristic1(){
@@ -84,11 +59,11 @@ public class Heuristic implements IHeuristicsComplexed {
       
         
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
-               return 0;
+               return 10;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
-               return 0;
+               return 10;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
-               return 0;
+               return 10;
 
        
       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
@@ -139,8 +114,6 @@ public class Heuristic implements IHeuristicsComplexed {
             }
         return true;
     }
-    
-    
     
     private boolean canNeutronReachEnemyEdge(Position neutronPosition, int[] move){
         
