@@ -71,36 +71,33 @@ public class Heuristic implements IHeuristicsComplexed {
     private double heuristic1(){
 
        //-neutron u przeciwnika
-       int x = m_gameBorder.getNeutronPosition().getX();
 
-       if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
+       int y = m_gameBorder.getNeutronPosition().getX();
+       if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
            return 0;
-       else if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
+       if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
             return 100;
   
-/*
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
            return 75;
       
         
-        //-neutron zagraz linii przeciwnika - przeciwnik bedzie musial sie bronic
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
-               return 25;
+               return 0;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
-               return 25;
+               return 0;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
-               return 25;
-        
-       //najgorszy mozliwy ruch, 0 bo wystawiamy sie, przeciwnik moze w jednym ruchu wygrac
-      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
                return 0;
-       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
-               return 0;
-       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
-               return 0;
-*/       
+
        
+      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
+               return 25;
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
+               return 25;
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
+               return 25;
+              
        //w kazdym innym przypadku
        return 50;
     }
