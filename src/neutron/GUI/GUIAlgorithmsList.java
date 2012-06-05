@@ -6,6 +6,7 @@ import neutron.Logic.Model.Algorithm;
 import neutron.Logic.Model.FakeLogger;
 import neutron.Logic.Model.GameStateGenerator;
 import neutron.Logic.Model.Heuristics.Heuristic;
+import neutron.Logic.Model.Heuristics.Heuristic2;
 import neutron.Logic.Model.Heuristics.SimpleHeuristic;
 
 /**
@@ -35,6 +36,10 @@ public class GUIAlgorithmsList {
                 list.add(new GUIAlgorithm(
                 new Algorithm(new Heuristic(), new GameStateGenerator(), new FakeLogger()), 
                 "H1"));
+                
+                list.add(new GUIAlgorithm(
+                new Algorithm(new Heuristic2(), new GameStateGenerator(), new FakeLogger()), 
+                "H2"));
         
     }
 }
