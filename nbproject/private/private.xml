@@ -8,13 +8,11 @@
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/GameBorderGenerator.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/GameStateGenerator.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/Moves/MovesRunner.java</file>
-        <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/Heuristics/Heuristic.java</file>
-        <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/Heuristics/Heuristic3.java</file>
-        <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/Heuristics/Heuristic2.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Model/Heuristics/SimpleHeuristic.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/Logic/Interfaces/IHeuristics.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/test/neutron/Logic/Model/Heuristics/SimpleHeuristicTest.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/GUI/GUIAlgorithm.java</file>
         <file>file:/C:/Users/Marcin/Desktop/git/Neutron/src/neutron/GUI/GUIAlgorithmsList.java</file>
+        <file>file:/C:/Users/Marcin/Desktop/git/Neutron/test/neutron/Logic/Model/GameBorderGeneratorTest.java</file>
     </open-files>
 </project-private>
