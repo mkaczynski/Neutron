@@ -5,11 +5,7 @@ import java.util.List;
 import neutron.Logic.Model.Algorithm;
 import neutron.Logic.Model.FakeLogger;
 import neutron.Logic.Model.GameStateGenerator;
-import neutron.Logic.Model.Heuristics.Heuristic;
-import neutron.Logic.Model.Heuristics.Heuristic2;
-//import neutron.Logic.Model.Heuristics.Heuristic2;
-import neutron.Logic.Model.Heuristics.Heuristic3;
-import neutron.Logic.Model.Heuristics.SimpleHeuristic;
+import neutron.Logic.Model.Heuristics.*;
 
 /**
  * @author Marcin
@@ -44,8 +40,17 @@ public class GUIAlgorithmsList {
             "H3"));
 
         list.add(new GUIAlgorithm(
-                new Algorithm(new SimpleHeuristic(), new GameStateGenerator(), new FakeLogger()), 
+                new Algorithm(new Heuristic4(), new GameStateGenerator(), new FakeLogger()), 
                 "H4"));
+        
+        list.add(new GUIAlgorithm(
+                new Algorithm(new Heuristic5(), new GameStateGenerator(), new FakeLogger()), 
+                "H5"));
+        
+        list.add(new GUIAlgorithm(
+                new Algorithm(new Heuristic6(), new GameStateGenerator(), new FakeLogger()), 
+                "H6"));
+        
         
     }
 }
