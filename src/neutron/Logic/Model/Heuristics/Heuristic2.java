@@ -13,7 +13,6 @@ import neutron.Utils.Position;
  */
 public class Heuristic2 implements IHeuristics{
     
-     
     IGameState m_gameState;
     IGameBorder m_gameBorder;
     IPlayer m_actualPlayer;
@@ -31,10 +30,8 @@ public class Heuristic2 implements IHeuristics{
     
     private static final int[][] MOVES = {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
 	
-    
-    
     @Override
-    public double heuristicsValue(IGameState gameState){
+    public double heuristicsValue(IGameState gameState, BorderElementType playmaker){
         m_gameState = gameState;
         m_gameBorder = gameState.getGameBorder();
         m_actualPlayer = gameState.getActualPlayer();
@@ -43,40 +40,37 @@ public class Heuristic2 implements IHeuristics{
         
         //-neutron u przeciwnika
        int y = m_gameBorder.getNeutronPosition().getX();
-       if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
+       if(y == ((playmaker == BorderElementType.Black) ?  0 : m_lastBoardIndex))
            return 0;
-       if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
+       if(y == ((playmaker == BorderElementType.Black) ? m_lastBoardIndex : 0))
             return 100;
             
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
            return 75;
-      
         
-       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UP : DOWN)))
                return 0;
-       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
                return 0;
-       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
                return 0;
-
-       
-      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
+   
+      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)))
                return 25;
-       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
                return 25;
-       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
                return 25;
         
         
         //im blizej naszego pola tym lepiej
-        if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex-1 : 1))
+        if(y == ((playmaker == BorderElementType.Black) ? m_lastBoardIndex-1 : 1))
             return 65;
-        if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex-2 : 2))
+        if(y == ((playmaker == BorderElementType.Black) ? m_lastBoardIndex-2 : 2))
             return 40;
-        if(y == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex-3 : 3))
+        if(y == ((playmaker == BorderElementType.Black) ? m_lastBoardIndex-3 : 3))
             return 15;
-        
         
         return 10;
     }

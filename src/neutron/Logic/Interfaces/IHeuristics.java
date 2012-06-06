@@ -7,5 +7,5 @@ public interface IHeuristics {
     /*
      * Computes heuristics value for the specified game state.
      */
-    double heuristicsValue(IGameState gameState);
+    double heuristicsValue(IGameState gameState, BorderElementType playmaker);
 }

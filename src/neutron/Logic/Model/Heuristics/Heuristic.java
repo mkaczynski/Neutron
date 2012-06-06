@@ -11,7 +11,7 @@ import neutron.Utils.Position;
  *
  * @author programer
  */
-public class Heuristic implements IHeuristicsComplexed {
+public class Heuristic implements IHeuristics {
     
     IGameState m_gameState;
     IGameBorder m_gameBorder;
@@ -32,73 +32,46 @@ public class Heuristic implements IHeuristicsComplexed {
     
     private static final int[][] MOVES = {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
 	
-    
-    
     @Override
-    public void setHeuristicType(int type){
-        m_iType = type;
-    }
-    
-    @Override
-    public int[] getHeuristicsTypes(){
-        return m_iaTypes;
-    }
-    
-    @Override
-    public double heuristicsValue(IGameState gameState){
+    public double heuristicsValue(IGameState gameState, BorderElementType playmaker){
         m_gameState = gameState;
         m_gameBorder = gameState.getGameBorder();
         m_actualPlayer = gameState.getActualPlayer();
         m_Board = m_gameBorder.getBorder();
         m_lastBoardIndex = m_gameBorder.getBorderSize()-1;
         
-        switch(m_iType){
-            case 1:
-                return heuristic1();
-            case 2:
-                
-                break;
-                
-            case 3:
-            default:
-                
-                break;
-        }
-        
-        return -100;
+        return heuristic1(playmaker);
     }
     
-    private double heuristic1(){
+    private double heuristic1(BorderElementType playmaker){
 
        //-neutron u przeciwnika
        int x = m_gameBorder.getNeutronPosition().getX();
 
-       if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  0 : m_lastBoardIndex))
+       if(x == ((playmaker == BorderElementType.Black) ?  0 : m_lastBoardIndex))
            return 0;
-       else if(x == ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? m_lastBoardIndex : 0))
+       else if(x == ((playmaker == BorderElementType.Black) ? m_lastBoardIndex : 0))
             return 100;
  
         //-pionki przeciwnika zablokowane
        if(enemyBlocked())
            return 75;
-      
-        
+       
         //-neutron zagraz linii przeciwnika - przeciwnik bedzie musial sie bronic
-       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UP : DOWN)))
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UP : DOWN)))
                return 25;
-       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
                return 25;
-       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
+       if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
                return 25;
         
        //najgorszy mozliwy ruch, 0 bo wystawiamy sie, przeciwnik moze w jednym ruchu wygrac
-      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ?  DOWN : UP)))
+      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)))
                return 0;
-       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
                return 0;
-       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((m_actualPlayer.getPawnsColor() == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
                return 0;
-       
        
        //w kazdym innym przypadku
        return 10;

@@ -1,10 +1,7 @@
 package neutron.Logic.Model.Heuristics;
 
 import java.util.List;
-import neutron.Logic.Interfaces.IGameState;
-import neutron.Logic.Interfaces.IGameStateGenerator;
-import neutron.Logic.Interfaces.IHeuristics;
-import neutron.Logic.Interfaces.IPlayer;
+import neutron.Logic.Interfaces.*;
 import neutron.Logic.Model.GameState;
 import neutron.Logic.Model.GameStateGenerator;
 
@@ -20,11 +17,18 @@ public class SimpleHeuristic implements IHeuristics {
      * The value of this heuristic is a number of possible moves of the next player.
      */
     @Override
-    public double heuristicsValue(IGameState gameState) {
+    public double heuristicsValue(IGameState gameState, BorderElementType playmaker) {
         
-        // trzeba mieć na uwadze, ze ta heurystyka jest bardzo slaba, bo
-        // patrzy tylko na 1 najblizszy ruch
-        // slaboscia sama w sobie jest rozwijanie drzewa w heurystyce
+        // slaboscia sama w sobie jest rozwijanie drzewa w heurystyce - ogolnie to rozwijanie jest bez
+        // sensu, ale heurystyka znacznie rozni sie od innych
+        
+       int x = gameState.getGameBorder().getNeutronPosition().getX();
+
+       if(x == ((playmaker == BorderElementType.Black) ?  0 : 4))
+           return 0;
+       else if(x == ((playmaker == BorderElementType.Black) ? 4 : 0))
+            return 100;
+ 
         
         IPlayer nextPlayer = gameState.getNextPlayer();
         IPlayer currentPlayer = gameState.getActualPlayer();
@@ -38,8 +42,7 @@ public class SimpleHeuristic implements IHeuristics {
             return maxValue; // nastepny gracz nie moze wykonac ruchu
         }
         
-        return ((double)results.size() / 95) * 100; // znormalizowana liczba ruchow, 95 dlatego ze
-                                            // tyle jest ruchow dla pustej planszy
+        return ((double)results.size() / 200) * 100; // znormalizowana liczba ruchow
     }
     
 }

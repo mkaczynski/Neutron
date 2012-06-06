@@ -52,7 +52,7 @@ public class SimpleHeuristicTest {
         IHeuristics instance = new SimpleHeuristic();
         
         double expResult = 52.63; //wyznaczono eksperymentalnie - nie ma pewnosci czy to jest dobrze!
-        double result = round(instance.heuristicsValue(gameState));
+        double result = round(instance.heuristicsValue(gameState, BorderElementType.White));
         assertEquals(expResult,  result, 0.0);   
     }
     
@@ -87,7 +87,7 @@ public class SimpleHeuristicTest {
         IHeuristics instance = new SimpleHeuristic();
         
         double expResult = SimpleHeuristic.maxValue;
-        double result = round(instance.heuristicsValue(gs));
+        double result = round(instance.heuristicsValue(gs, BorderElementType.White));
         assertEquals(expResult, result, 0.0);   
     }
     

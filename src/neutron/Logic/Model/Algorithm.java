@@ -49,10 +49,10 @@ public class Algorithm implements IAlgorithm {
             throw new GameStateException(msg, gameState);
         }
         
-        List<GameStateEvaluation> em = ToGameStateEvaluations(moves);
+        List<GameStateEvaluation> em = ToGameStateEvaluations(moves, gameState.getActualPlayer().getPawnsColor());
         GameStateEvaluation bestState = null;// = em.get(0);
 
-        int i = -1;
+        int i = 1;
         while(true) { 
             
             if(!canExecute) {
@@ -61,7 +61,7 @@ public class Algorithm implements IAlgorithm {
             
             Collections.sort(em, new GameStateEvaluationComparator());
             try {
-                bestState = alfabeta(em, i += 2);                 
+                bestState = alfabeta(em, gameState.getActualPlayer().getPawnsColor(), i += 2);                 
 
                 System.out.print("\nWybrano best state na poziomie ");
                 System.out.print(i);
@@ -75,16 +75,10 @@ public class Algorithm implements IAlgorithm {
             }            
         }
         
-        //for(GameStateEvaluation gse: em) {
-        //    System.out.print(gse.getEvaluation());
-        //    System.out.print(" ");
-        //}
-
-        
         return bestState.getGameState();
     }
     
-    private GameStateEvaluation alfabeta(List<GameStateEvaluation> moves, int depth) 
+    private GameStateEvaluation alfabeta(List<GameStateEvaluation> moves, BorderElementType playmaker, int depth) 
             throws GameStateException, TimeoutException {        
                 
         double alpha = Double.MAX_VALUE*-1; //moves.get(0).getEvaluation(); //Double.MIN_VALUE;
@@ -92,13 +86,12 @@ public class Algorithm implements IAlgorithm {
         
         for(GameStateEvaluation gs : moves) {
                  
-            double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 1, 
-                depth - 1, Double.MAX_VALUE*-1, Double.MAX_VALUE);//); //@note
+            double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 
+                playmaker, 1, depth - 1, Double.MAX_VALUE*-1, Double.MAX_VALUE);//); //@note
 
+            gs.setEvaluation(val);
             
             if(val > alpha) {                
-                gs.setEvaluation(val);
-
                 bestState = gs;
                 alpha = val;
             }
@@ -106,21 +99,16 @@ public class Algorithm implements IAlgorithm {
 
         logger.writeMessage("Najlepszy znaleziony ruch dla gracza to:");
         logger.writeMessage(bestState.toString()); // null argument exception nie ma prawa sie wydarzyc
-
-        //for(GameStateEvaluation gs : moves) {
-        //    System.out.print(gs.getEvaluation());
-        //    System.out.print(" ");
-        //}
         
         return bestState;
     }
     
-    private List<GameStateEvaluation> ToGameStateEvaluations(List<IGameState> list) {
+    private List<GameStateEvaluation> ToGameStateEvaluations(List<IGameState> list, BorderElementType playmaker) {
         
         List<GameStateEvaluation> result = new ArrayList<GameStateEvaluation>();
         for(IGameState gs : list) {
             gs.changePlayers();
-            double e = heuristics.heuristicsValue(gs);
+            double e = heuristics.heuristicsValue(gs, playmaker);
             gs.changePlayers();
             GameStateEvaluation gse = new GameStateEvaluation(gs, e);
             result.add(gse);
@@ -128,7 +116,7 @@ public class Algorithm implements IAlgorithm {
         return result;
     }
     
-    private double alfabeta(IGameState gameState, int player, int depth, double alpha, double beta) 
+    private double alfabeta(IGameState gameState, BorderElementType playmaker, int player, int depth, double alpha, double beta) 
             throws TimeoutException {
 
         if(!canExecute) {
@@ -138,7 +126,7 @@ public class Algorithm implements IAlgorithm {
         if(depth == 0) {
             logger.writeMessage("Osiągnięto maksymalną głębokość przeszukiwania.");
             gameState.changePlayers();
-            double d = heuristics.heuristicsValue(gameState);
+            double d = heuristics.heuristicsValue(gameState, playmaker);
             gameState.changePlayers();
             
             /*if(depth == 0 && d == 25)
@@ -153,7 +141,7 @@ public class Algorithm implements IAlgorithm {
         if(gameState.isNeutronOnBaseField()) {
             logger.writeMessage("Gra jest skonczona - neutron znajduje sie w jednym z pol bazowych.");
             gameState.changePlayers();
-            double d = heuristics.heuristicsValue(gameState);
+            double d = heuristics.heuristicsValue(gameState, playmaker);
             gameState.changePlayers();
             return d;
         }
@@ -162,7 +150,7 @@ public class Algorithm implements IAlgorithm {
         if(moves == null || moves.isEmpty()) {
             logger.writeMessage("Nie ma więcej ruchów do przeglądania.");
             gameState.changePlayers();
-            double d = heuristics.heuristicsValue(gameState);
+            double d = heuristics.heuristicsValue(gameState, playmaker);
             gameState.changePlayers();
             return d;
         }
@@ -181,8 +169,8 @@ public class Algorithm implements IAlgorithm {
                     else
                         continue;
                 }*/
-                
-                beta = Math.min(beta, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
+                //gs.getGameBorder().write();
+                beta = Math.min(beta, alfabeta(gs, playmaker, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
                 {
                     logger.writeMessage("Alfa-obcięcie.");
@@ -205,8 +193,9 @@ public class Algorithm implements IAlgorithm {
                     else
                         continue;
                 }*/
-                
-                alpha = Math.max(alpha, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
+
+                //gs.getGameBorder().write();
+                alpha = Math.max(alpha, alfabeta(gs, playmaker, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
                 {
                     logger.writeMessage("Beta-obcięcie.");

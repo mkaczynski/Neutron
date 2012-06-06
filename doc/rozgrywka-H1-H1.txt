@@ -1,0 +1,103 @@
+Zaczynamy od standardowego ruchu - czerwony - 1 - S. W kodzie, mamy trochê inn¹ reprezentacjê (ogólnie czerwony = bia³y, zielony = czarny).
+
+Blank White White White White 
+Blank Blank Blank Blank Blank 
+Blank Blank Neutron Blank Blank 
+White Blank Blank Blank Blank 
+Black Black Black Black Black 
+
+Ruch wykonuje zielony. W pierwszym pog³êbieniu dochodzi do poziomu 3 i wybiera neutralny ruch:
+Wybrano best state na poziomie 3 25.0
+Blank White White White White 
+Blank Blank Neutron Black Blank 
+Blank Blank Blank Blank Blank 
+White Blank Blank Blank Blank 
+Blank Black Black Black Black 
+
+W kolejnej iteracji zielony schodzi na g³êbokoœæ 5. Nie udaje mu siê poprawiæ rozgrywki.
+Wybrano best state na poziomie 5 25.0
+Blank White White White White 
+Blank Blank Neutron Blank Black 
+Blank Blank Blank Blank Blank 
+White Blank Blank Blank Blank 
+Black Blank Black Black Black 
+
+Ruch wykonuje czerwony. W pierwszym pog³êbieniu na g³êbokoœci 3 wybiera neutralny ruch.
+Wybrano best state na poziomie 3 25.0
+Blank Blank White White White 
+Blank Blank Blank Blank Black 
+Blank Blank Blank Blank Blank 
+White Blank Neutron Blank Blank 
+Black White Black Black Black
+
+Zag³êbiaj¹c siê dalej czerwony odkrywa, ¿e mo¿e wygraæ wykonuj¹c inny ruch: 
+Wybrano best state na poziomie 5 100.0
+Blank White Blank White White 
+Neutron Blank Blank Blank Black 
+Blank Blank Blank Blank Blank 
+White Blank White Blank Blank 
+Black Blank Black Black Black 
+
+Ruch wykonuje zielony. Na g³êbokoœci 3 jest przekonany, ¿e jest bezpieczny i decyduje siê na wykonanie
+neutralnego ruchu.
+Wybrano best state na poziomie 3 25.0
+Blank White Blank White White 
+Blank Blank Blank Blank Blank 
+Blank Neutron Blank Black Blank 
+White Blank White Blank Blank 
+Black Blank Black Black Black
+
+Zielony patrz¹c dalej dowiaduje siê o pora¿ce: 
+Wybrano best state na poziomie 5 0.0
+Blank White Blank White White 
+Blank Blank Blank Blank Blank 
+Blank Neutron Blank Black Blank 
+White Blank White Blank Blank 
+Black Blank Black Black Black 
+
+Czerwonu ju¿ na g³êbokoœci 3 widzi, ¿e mo¿e wygraæ:
+Wybrano best state na poziomie 3 100.0
+Blank Blank Blank White White 
+Blank Blank White Blank Blank 
+Blank Blank Neutron Black Blank 
+White Blank White Blank Blank 
+Black Blank Black Black Black 
+
+Na g³êbokoœci 5 wniosek jest ten sam (prawdopodobnie w tym przypadku nie ca³e drzewo jest przeszukiwane).
+Wybrano best state na poziomie 5 100.0
+Blank Blank Blank White White 
+Blank Blank White Blank Blank 
+Blank Blank Neutron Black Blank 
+White Blank White Blank Blank 
+Black Blank Black Black Black 
+
+Zielony widzi pora¿kê na g³êbokoœci 3.
+Wybrano best state na poziomie 3 0.0
+Blank Blank Blank White White 
+Blank Blank White Blank Blank 
+Neutron Blank Blank Blank Blank 
+White Blank White Black Blank 
+Black Blank Black Black Black 
+
+Wybrano best state na poziomie 5 0.0
+Blank Blank Blank White White 
+Blank Blank White Blank Blank 
+Neutron Blank Blank Blank Blank 
+White Blank White Black Blank 
+Black Blank Black Black Black 
+
+Czerwony ostatecznie wygrywa:
+Wybrano best state na poziomie 3 100.0
+Neutron Blank Blank Blank White 
+Blank Blank White Blank Blank 
+Blank Blank Blank White Blank 
+White Blank White Black Blank 
+Black Blank Black Black Black 
+
+Wybrano best state na poziomie 5 100.0
+Neutron Blank Blank Blank White 
+Blank Blank White Blank Blank 
+Blank Blank Blank White Blank 
+White Blank White Black Blank 
+Black Blank Black Black Black 
+Blank White White White White 
