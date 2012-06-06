@@ -4,15 +4,19 @@
  */
 package neutron.Logic.Model.Heuristics;
 
-import neutron.Logic.Interfaces.*;
+import neutron.Logic.Interfaces.BorderElementType;
+import neutron.Logic.Interfaces.IGameBorder;
+import neutron.Logic.Interfaces.IGameState;
+import neutron.Logic.Interfaces.IHeuristics;
+import neutron.Logic.Interfaces.IPlayer;
 import neutron.Utils.Position;
 
 /**
  *
  * @author programer
  */
-public class Heuristic implements IHeuristics {
-    
+public class Heuristic5 implements IHeuristics{
+  
     IGameState m_gameState;
     IGameBorder m_gameBorder;
     IPlayer m_actualPlayer;
@@ -32,6 +36,7 @@ public class Heuristic implements IHeuristics {
     
     private static final int[][] MOVES = {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
 	
+    
     @Override
     public double heuristicsValue(IGameState gameState, BorderElementType playmaker){
         m_gameState = gameState;
@@ -40,10 +45,10 @@ public class Heuristic implements IHeuristics {
         m_Board = m_gameBorder.getBorder();
         m_lastBoardIndex = m_gameBorder.getBorderSize()-1;
         
-        return heuristic1(playmaker);
+        return heuristic(playmaker);
     }
     
-    private double heuristic1(BorderElementType playmaker){
+    private double heuristic(BorderElementType playmaker){
 
        //-neutron u przeciwnika
        int x = m_gameBorder.getNeutronPosition().getX();
@@ -57,26 +62,59 @@ public class Heuristic implements IHeuristics {
        if(enemyBlocked())
            return 75;
        
-       
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UP : DOWN)))
                return 0;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UPLEFT : DOWNLEFT)))
                return 0;
        if(canNeutronReachEnemyEdge(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? UPRIGHT : DOWNRIGHT)))
                return 0;
+
+       if(neutronMoves(m_gameBorder.getNeutronPosition(), 1) && (canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT))))
+           return 99;
+       if(neutronMoves(m_gameBorder.getNeutronPosition(), 2) && (canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT))))
+           return 70;
+       if(neutronMoves(m_gameBorder.getNeutronPosition(), 3) && (canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT))))
+           return 65;
+       if(neutronMoves(m_gameBorder.getNeutronPosition(), 4) && (canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)) || canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT))))
+           return 55;
        
-      if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)))
-               return 25;
+       
+       if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ?  DOWN : UP)))
+               return 45;
        if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNLEFT : UPLEFT)))
-               return 25;
+               return 45;
        if(canNeutronReachOurLine(m_gameBorder.getNeutronPosition(), ((playmaker == BorderElementType.Black) ? DOWNRIGHT : UPRIGHT)))
-               return 25;
+               return 45;
        
        
-        
+        if(neutronMoves(m_gameBorder.getNeutronPosition(), 1))
+            return 40;
+        if(neutronMoves(m_gameBorder.getNeutronPosition(), 2))
+            return 35;
+        if(neutronMoves(m_gameBorder.getNeutronPosition(), 3))
+            return 25;
+       
+       
        
        //w kazdym innym przypadku
        return 10;
+    }
+    
+    
+    private boolean neutronMoves(Position neutron, int numberPossibleMoves){
+        
+        int x, y, count=0;
+        x= neutron.getY();
+        y= neutron.getX();
+        
+        for(int i=0; i<8; ++i){
+            if(x+MOVES[i][0]<0 || x+MOVES[i][0]>4 || y+MOVES[i][1]<0 || y+MOVES[i][1]>4)
+                continue;
+            if(m_Board[x+MOVES[i][0]][y+MOVES[i][1]] != BorderElementType.Blank)
+                ++count;
+        }
+        if(count==numberPossibleMoves) return true;
+        return false;
     }
     
     
