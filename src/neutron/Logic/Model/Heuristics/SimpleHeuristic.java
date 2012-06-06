@@ -29,7 +29,6 @@ public class SimpleHeuristic implements IHeuristics {
        else if(x == ((playmaker == BorderElementType.Black) ? 4 : 0))
             return 100;
  
-        
         IPlayer nextPlayer = gameState.getNextPlayer();
         IPlayer currentPlayer = gameState.getActualPlayer();
         
@@ -39,7 +38,7 @@ public class SimpleHeuristic implements IHeuristics {
         List results = gsg.getNexts(gs);
        
         if(results == null) {
-            return maxValue; // nastepny gracz nie moze wykonac ruchu
+            return maxValue - 10; // nastepny gracz nie moze wykonac ruchu
         }
         
         return ((double)results.size() / 200) * 100; // znormalizowana liczba ruchow
