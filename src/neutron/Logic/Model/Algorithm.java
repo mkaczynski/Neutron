@@ -75,23 +75,30 @@ public class Algorithm implements IAlgorithm {
             }            
         }
         
+        //for(GameStateEvaluation gse: em) {
+        //    System.out.print(gse.getEvaluation());
+        //    System.out.print(" ");
+        //}
+
+        
         return bestState.getGameState();
     }
     
     private GameStateEvaluation alfabeta(List<GameStateEvaluation> moves, int depth) 
             throws GameStateException, TimeoutException {        
                 
-        double alpha = Double.MIN_VALUE*-1; //moves.get(0).getEvaluation(); //Double.MIN_VALUE;
+        double alpha = Double.MAX_VALUE*-1; //moves.get(0).getEvaluation(); //Double.MIN_VALUE;
         GameStateEvaluation bestState = null;//moves.get(0);
         
         for(GameStateEvaluation gs : moves) {
                  
             double val = /*Math.max(alpha,*/ alfabeta(gs.getGameState(), 1, 
-                depth - 1, Double.MIN_VALUE*-1, Double.MAX_VALUE);//); //@todo - czy to jest dobrze?
+                depth - 1, Double.MAX_VALUE*-1, Double.MAX_VALUE);//); //@note
 
-            gs.setEvaluation(val);
             
             if(val > alpha) {                
+                gs.setEvaluation(val);
+
                 bestState = gs;
                 alpha = val;
             }
@@ -133,6 +140,13 @@ public class Algorithm implements IAlgorithm {
             gameState.changePlayers();
             double d = heuristics.heuristicsValue(gameState);
             gameState.changePlayers();
+            
+            /*if(depth == 0 && d == 25)
+            {
+                gameState.getGameBorder().write();
+                int a = 1;
+            }*/
+            
             return d;
         }
         
@@ -156,8 +170,17 @@ public class Algorithm implements IAlgorithm {
         if(player % 2 == 1) {
             logger.writeMessage("Ruch przeciwnika.");
             for(IGameState gs : moves) {
-                
-                //gs.getGameBorder().write();
+            
+                /*if(gs.isNeutronOnBaseField()) {
+                    logger.writeMessage("Gra jest skonczona - neutron znajduje sie w jednym z pol bazowych.");
+                    gameState.changePlayers();
+                    double d = Math.min(beta, heuristics.heuristicsValue(gameState));
+                    gameState.changePlayers();
+                    if(d >= beta)
+                        return alpha;
+                    else
+                        continue;
+                }*/
                 
                 beta = Math.min(beta, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
@@ -171,6 +194,18 @@ public class Algorithm implements IAlgorithm {
         else {
             logger.writeMessage("Ruch aktualnego gracza.");
             for(IGameState gs : moves) {
+                
+                /*if(gs.isNeutronOnBaseField()) {
+                    logger.writeMessage("Gra jest skonczona - neutron znajduje sie w jednym z pol bazowych.");
+                    gameState.changePlayers();
+                    double d = Math.max(alpha, heuristics.heuristicsValue(gameState));
+                    gameState.changePlayers();
+                    if(d >= beta)
+                        return beta;
+                    else
+                        continue;
+                }*/
+                
                 alpha = Math.max(alpha, alfabeta(gs, (player + 1) % 2, depth - 1, alpha, beta));
                 if(alpha >= beta)
                 {
