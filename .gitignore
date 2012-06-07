@@ -1,7 +1,7 @@
 build
 dist
+nbproject/private/private.properties
+nbproject/private/private.xml
 /doc/raport.aux
 /doc/raport.log
 /doc/raport.out
-/nbproject/private/private.properties
-/nbproject/private/private.xml
